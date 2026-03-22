@@ -74,16 +74,17 @@ These are combined into a weighted **AI Text Slop Score** (0–100).
 │   ├── llama3.2-1b/         # 30 samples
 │   └── human-qiita/         # 10 human baseline articles
 ├── scripts/
-│   ├── collect_samples.py   # API sample collection
-│   ├── analyze_patterns.py  # 16-pattern analysis + Slop Score
-│   └── visualize.py         # Chart generation (matplotlib)
+│   ├── collect_samples.py       # API sample collection
+│   ├── analyze_patterns.py      # 16-pattern analysis + Slop Score
+│   ├── sensitivity_analysis.py  # Weight sensitivity + feature-level effects
+│   └── visualize.py             # Chart generation (matplotlib)
 ├── results/
 │   ├── analysis_results.json
 │   ├── human_baseline.json
 │   └── *.png                # Visualization charts
 ├── paper/
 │   ├── main.tex             # LaTeX source
-│   ├── main.pdf             # Compiled paper (13 pages)
+│   ├── main.pdf             # Compiled paper (14 pages, v4)
 │   └── figures/
 └── README.md
 ```
@@ -96,6 +97,9 @@ cd ai-text-slop
 
 # Run analysis
 python scripts/analyze_patterns.py
+
+# Run sensitivity analysis (weight robustness + feature-level effects)
+python scripts/sensitivity_analysis.py
 
 # Generate visualizations
 pip install matplotlib

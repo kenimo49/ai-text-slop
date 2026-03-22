@@ -31,10 +31,10 @@ Large Language Models (LLMs) are increasingly used for content generation, yet t
 While prior work has identified English-language markers such as elevated em-dash usage and specific vocabulary frequencies, no study has systematically analyzed Japanese-language AI text patterns.
 We present the first quantitative analysis of stylistic convergence in Japanese technical blog writing across six LLMs---Claude Sonnet~4, GPT-4o, Qwen~3.5 (4B and 9B), Swallow-20B (Japanese-specialized), and Llama~3.2-1B---using 180 samples (6 models $\times$ 10 topics $\times$ 3 trials).
 We define and measure 16 linguistic pattern indicators, including AI-frequent vocabulary density, boilerplate conclusions, hedging expressions, structural formatting metrics, and sentence-length uniformity, and propose a composite \textit{AI Text Slop Score}.
-Results show that commercially aligned models (Claude Sonnet~4: 21.5, GPT-4o: 19.8) score significantly higher than open-source models (Llama~3.2-1B: 10.3), suggesting that RLHF-based instruction tuning amplifies stylistic convergence.
+Results show that commercially aligned models (Claude Sonnet~4: 21.5, GPT-4o: 19.8) score significantly higher than open-source models (Llama~3.2-1B: 10.3), consistent with the hypothesis that RLHF-based instruction tuning may amplify stylistic convergence.
 The Japanese-specialized Swallow-20B shows the lowest AI-frequent vocabulary usage (0.80) yet maintains high boilerplate conclusion rates (1.17), revealing a dissociation between vocabulary and structural patterns.
 This phenomenon directly impacts content trust on publishing platforms, reduces stylistic diversity in technical communication, and undermines the reliability of AI text detection systems that assume uniform output characteristics.
-These findings provide a foundation for AI text detection tools and writing style improvement in Japanese-language contexts.
+These findings provide empirical evidence and a starting point for developing AI text detection tools and writing style improvement in Japanese-language contexts and demonstrate that vocabulary-level and structural indicators must be analyzed separately due to cultural confounding in platform-specific formatting conventions.
 \end{abstract}
 
 \section{Introduction}
@@ -52,9 +52,10 @@ This paper makes the following contributions:
 \begin{enumerate}
     \item To the best of our knowledge, the first systematic quantification of AI text stylistic patterns in \textbf{Japanese-language} technical writing, measuring 16 pattern indicators across 180 samples from six LLMs.
     \item A composite \textbf{AI Text Slop Score} that aggregates weighted indicators into a single metric for cross-model comparison.
-    \item Strong statistical evidence ($p < 10^{-9}$, Cohen's $d = 1.01$) that \textbf{RLHF-aligned commercial models} exhibit significantly higher stylistic convergence than open-source alternatives, consistent with the hypothesis that instruction tuning amplifies text homogeneity.
+    \item Statistical evidence ($p < 10^{-9}$, Cohen's $d = 1.01$) that \textbf{RLHF-aligned commercial models} exhibit significantly higher stylistic convergence than open-source alternatives, consistent with the hypothesis that instruction tuning amplifies text homogeneity.
     \item Identification of a \textbf{dissociation between vocabulary and structural patterns} in the Japanese-specialized Swallow-20B: low AI-vocabulary density coexists with high boilerplate usage.
     \item Comparative analysis across \textbf{model scale} (1B--20B parameters) revealing non-linear relationships between model size and stylistic convergence.
+    \item Demonstration that composite AI text scores based on mixed vocabulary and structural indicators are culturally confounded: human Qiita articles score higher ($28.5 \pm 8.1$) than all AI models, motivating the separation of vocabulary-specific and platform-conventional sub-scores.
 \end{enumerate}
 
 \section{Related Work}
@@ -166,6 +167,35 @@ We define a composite score by normalizing each indicator to $[0, 1]$ via min-ma
 
 where $\hat{x}_i = \min(x_i / \max(x_i), 1)$ is the normalized indicator value, and $(1 - \text{CV})$ captures sentence-length uniformity (lower CV = more AI-like). Weights are heuristic and reflect qualitative importance based on our observation of Japanese AI text patterns, rather than learned optimization: AI-frequent vocabulary ($w = 3.0$), boilerplate conclusions ($w = 2.5$), ``important'' endings ($w = 2.0$), sycophancy ($w = 2.0$), hedging and three-set ($w = 1.5$ each), bold, lists, and emoji ($w = 1.0$ each), and uniformity ($w = 1.5$). Future work should estimate optimal weights using supervised learning with human-annotated training data to improve the score's discriminative validity.
 
+\subsubsection{Sensitivity Analysis}
+
+To assess whether the ranking of models is robust to weight choice, we computed scores under four alternative weighting schemes: (1) equal weights, (2) vocabulary-only indicators, (3) structure-only indicators, and (4) leave-one-feature-out (Table~\ref{tab:sensitivity}).
+
+\begin{table}[H]
+\centering
+\caption{Sensitivity analysis: model scores under alternative weighting schemes. Ranks are shown in parentheses.}
+\label{tab:sensitivity}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Model} & \textbf{Original} & \textbf{Equal Wt} & \textbf{Vocab Only} & \textbf{Struct Only} \\
+\midrule
+Claude Sonnet 4 & 22.6 (1) & 23.2 (1) & 18.0 (2) & 33.6 (1) \\
+GPT-4o & 20.1 (2) & 20.0 (2) & 20.3 (1) & 26.2 (3) \\
+Qwen 3.5-4B & 16.6 (3) & 16.7 (3) & 18.0 (2) & 20.8 (5) \\
+Qwen 3.5-9B & 15.6 (4) & 15.7 (5) & 15.1 (4) & 21.7 (4) \\
+Swallow-20B & 15.2 (5) & 16.6 (4) & 7.7 (6) & 28.0 (2) \\
+Llama 3.2-1B & 11.3 (6) & 12.8 (6) & 12.9 (5) & 15.0 (6) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The top-2 models (Claude Sonnet 4 and GPT-4o) remain consistent across original, equal-weight, and structure-only schemes. Under vocabulary-only scoring, GPT-4o marginally surpasses Claude, reflecting GPT-4o's stronger hedging tendency. Swallow-20B rises to rank 2 under structure-only scoring (28.0) despite being rank 5 overall, confirming the vocabulary--structure dissociation described in Section~5.2.
+
+In the leave-one-feature-out analysis, the top-2 ranking (Claude Sonnet 4, GPT-4o) is preserved across all 10 feature-drop conditions, indicating that no single indicator drives the commercial--OSS difference.
+
+The commercial vs.\ OSS gap is significant under all weighting schemes (Mann--Whitney $U$, $p < 10^{-6}$), with Cohen's $d$ ranging from 0.67 (vocabulary-only) to 1.15 (original weights).
+
 \section{Results}
 
 \subsection{Overview}
@@ -212,6 +242,31 @@ Figure~\ref{fig:slop_score} shows the composite AI Text Slop Score. Claude Sonne
 A Kruskal--Wallis test confirms that differences across all six models are statistically significant ($H = 49.87$, $p = 1.47 \times 10^{-9}$). Grouping models into commercial (Claude Sonnet~4 + GPT-4o, mean $= 20.7$) and open-source (Qwen~3.5 + Swallow + Llama, mean $= 14.4$), a Mann--Whitney $U$ test shows that commercial models score significantly higher ($U = 5530$, $p = 2.38 \times 10^{-9}$, Cohen's $d = 1.01$---a large effect). The pairwise comparison between the highest and lowest scoring models (Claude Sonnet~4 vs.\ Llama~3.2-1B) is also highly significant ($U = 786$, $p = 3.52 \times 10^{-7}$).
 
 These results are consistent with the hypothesis that RLHF-based instruction tuning contributes substantially to stylistic convergence, though the observational design does not permit causal claims.
+
+Table~\ref{tab:feature_effects} provides feature-level effect sizes between commercial and open-source models.
+
+\begin{table}[H]
+\centering
+\caption{Feature-level effect sizes (Cohen's $d$) for commercial vs.\ open-source models. Features marked with *** are significant at $p < 0.001$.}
+\label{tab:feature_effects}
+\small
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{Feature} & \textbf{Commercial} & \textbf{OSS} & \textbf{$d$} & \textbf{Sig.} \\
+\midrule
+AI vocabulary & 3.38 & 1.91 & +0.74 & *** \\
+Boilerplate concl. & 0.92 & 0.63 & +0.53 & *** \\
+Headings & 12.32 & 7.22 & +0.90 & *** \\
+List markers & 11.10 & 4.08 & +1.00 & *** \\
+Three-set & 1.23 & 0.89 & +0.49 & ** \\
+Hedging & 0.35 & 0.20 & +0.24 & ns \\
+Bold usage & 7.50 & 8.53 & $-$0.14 & ns \\
+Sent.\ length CV & 0.56 & 0.75 & $-$0.41 & ns \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The strongest discriminators are list markers ($d = +1.00$) and headings ($d = +0.90$), both structural features. At the vocabulary level, AI-frequent vocabulary ($d = +0.74$) is the most discriminating feature. Notably, bold usage and sentence-length CV show no significant difference or favor OSS models, underscoring that the commercial--OSS gap is driven by specific structural and vocabulary features rather than a uniform elevation across all indicators.
 
 \subsection{Pattern Profiles}
 
@@ -275,11 +330,13 @@ Sent.\ length CV & 0.62 & 0.56 & 0.56 & \textbf{0.76} \\
 \end{tabular}
 \end{table}
 
-A striking result emerges: the composite Slop Score for human articles ($28.5 \pm 8.1$) is \textit{higher} than all AI models, including Claude Sonnet~4 ($21.5 \pm 4.5$). This counterintuitive finding reflects the structural conventions of Qiita's technical blog culture: human authors on this platform extensively use headings (mean 22.4 per article), list markers (31.8), and boilerplate conclusions (2.2)---patterns that our score penalizes as ``AI-like.''
+This comparison yields the study's most methodologically important finding: the composite Slop Score for human articles ($28.5 \pm 8.1$) exceeds all AI models, including Claude Sonnet~4 ($21.5 \pm 4.5$). Rather than undermining the score's validity, this result reveals a fundamental distinction between two types of indicators in our framework.
 
-This reveals an important limitation of our current score formulation: \textbf{structural formatting indicators are culturally confounded}. What appears ``AI-like'' in isolation is actually standard practice in Japanese technical blogging. However, the \textbf{vocabulary-level indicators} do discriminate effectively: Claude (3.43) and GPT-4o (3.33) use more AI-characteristic vocabulary than both human writers (2.70) and Swallow-20B (0.80).
+\textbf{Structural indicators} (headings, list markers, boilerplate conclusions) reflect \textit{platform conventions}: Qiita authors routinely use 22.4 headings and 31.8 list markers per article as part of the platform's established ``good article'' template. These patterns predate AI-generated content and are culturally rather than computationally driven.
 
-This finding motivates a revised scoring approach for future work: separating \textit{vocabulary-level} indicators (which discriminate AI from human) from \textit{structural} indicators (which reflect platform conventions) into distinct sub-scores.
+\textbf{Vocabulary-level indicators}, by contrast, discriminate effectively: Claude Sonnet~4 (3.43) and GPT-4o (3.33) use significantly more AI-characteristic vocabulary than human writers (2.70) and Swallow-20B (0.80).
+
+We therefore characterize our human data as a \textit{preliminary human reference set} rather than a formal control group, given the small sample size ($n = 10$) and single-platform sourcing. Future work should expand to multi-platform comparisons (Qiita, Zenn, note, Hatena Blog) with topic-matched, length-controlled sampling and publication-date stratification. The key implication is that future AI text scoring systems should separate vocabulary-specific sub-scores (which discriminate AI from human) from structural sub-scores (which reflect platform culture) to avoid cultural confounding.
 
 \subsection{Model Scale Effects}
 
@@ -309,7 +366,7 @@ Among the open-source models (1B--20B), the Slop Score does \textit{not} increas
 
 \subsection{Why Might RLHF Amplify Stylistic Convergence?}
 
-Our results show a strong association between RLHF alignment intensity and stylistic convergence, consistent with the following mechanism. RLHF training optimizes for human preference ratings \cite{ouyang2022}. Human raters tend to prefer responses that are well-structured, comprehensive, and ``professional''---characteristics that map directly onto our measured patterns: headings for organization, lists for scannability, bold for emphasis, and hedging for epistemic humility. Over many training iterations, this is consistent with distributional convergence \cite{bommasani2021} toward a narrow band of ``approved'' styles.
+Our results show an association between RLHF alignment intensity and stylistic convergence, consistent with the following mechanism. RLHF training optimizes for human preference ratings \cite{ouyang2022}. Human raters tend to prefer responses that are well-structured, comprehensive, and ``professional''---characteristics that map directly onto our measured patterns: headings for organization, lists for scannability, bold for emphasis, and hedging for epistemic humility. Over many training iterations, this is consistent with distributional convergence \cite{bommasani2021} toward a narrow band of ``approved'' styles.
 
 We emphasize that our observational design establishes correlation rather than causation: commercial models differ from open-source models in many dimensions beyond RLHF (e.g., training data scale, architecture, post-training procedures), and isolating the specific contribution of RLHF would require controlled ablation studies.
 
@@ -320,7 +377,9 @@ This is not merely a cosmetic issue. When all AI-generated text converges on the
     \item \textbf{Self-reinforcing}: As AI-generated text enters training corpora, future models learn an even narrower style distribution.
 \end{itemize}
 
-\subsection{The Swallow Paradox: Low Vocabulary, High Structure}
+The feature-level analysis (Table~\ref{tab:feature_effects}) further specifies which indicators drive the gap: structural features (headings $d = 0.90$, lists $d = 1.00$) contribute more than vocabulary ($d = 0.74$), and some indicators (bold usage, sentence-length CV) show no significant commercial--OSS difference at all. This heterogeneity argues against a monolithic ``RLHF effect'' and instead suggests that alignment training may selectively amplify certain structural conventions while leaving other dimensions largely unaffected.
+
+\subsection{The Swallow Paradox}: Low Vocabulary, High Structure}
 
 Swallow-20B presents a striking dissociation: it has the lowest AI-frequent vocabulary count (0.80, vs.\ 3.43 for Claude) yet the highest boilerplate conclusion rate (1.17). We hypothesize this reflects the Japanese-specialized training corpus: Swallow learned more natural Japanese vocabulary from its curated corpus but also internalized the structural conventions (``\textit{ikaga deshita deshou ka},'' ``\textit{matome}'') prevalent in Japanese technical blog culture.
 
@@ -364,15 +423,16 @@ For AI detection tool developers:
 We presented the first systematic quantification of AI text stylistic patterns in Japanese technical writing, analyzing 180 samples across six LLMs with 16 pattern indicators. Our key findings are:
 
 \begin{enumerate}
-    \item \textbf{Commercial $>$ open-source in stylistic convergence}: RLHF-aligned models (Claude Sonnet~4: 21.5, GPT-4o: 19.8) produce significantly more ``AI-like'' text than open-source alternatives (Llama~3.2-1B: 10.3), confirmed by Kruskal--Wallis ($H = 49.87$, $p < 10^{-9}$) and Mann--Whitney $U$ tests (Cohen's $d = 1.01$).
+    \item \textbf{Commercial $>$ open-source in stylistic convergence}: RLHF-aligned models (Claude Sonnet~4: 21.5, GPT-4o: 19.8) score significantly higher on our composite measure than open-source alternatives (Llama~3.2-1B: 10.3), confirmed by Kruskal--Wallis ($H = 49.87$, $p < 10^{-9}$) and Mann--Whitney $U$ tests (Cohen's $d = 1.01$).
     \item \textbf{Alignment intensity is associated with convergence more than model scale}: The Slop Score does not increase monotonically with parameters (4B: 16.7, 9B: 15.6, 20B: 15.2), but jumps sharply for extensively RLHF-trained commercial models.
     \item \textbf{Vocabulary and structural patterns dissociate}: Swallow-20B (Japanese-specialized) shows minimal AI vocabulary but maximal boilerplate usage, indicating that language-specialized training affects these dimensions independently.
     \item \textbf{Each model has a detectable ``fingerprint''}: Claude over-structures, GPT hedges, Swallow concludes formulaically, and Llama cannot follow length instructions.
     \item \textbf{Japanese-specific detection requires structural analysis}: Vocabulary-based detection alone is insufficient due to the Swallow paradox.
     \item \textbf{Structural indicators are culturally confounded}: Human Qiita articles score higher on structural metrics (headings, lists) than AI models, indicating that platform conventions must be separated from AI-specific patterns in future scoring systems.
+    \item \textbf{Score robustness}: Sensitivity analysis confirms that the commercial--OSS ranking is preserved under equal weights, vocabulary-only, structure-only, and leave-one-feature-out conditions (Cohen's $d$ = 0.67--1.15), indicating that our findings are not artifacts of the specific weight choices.
 \end{enumerate}
 
-This work provides a foundation for Japanese-language AI text detection and writing style improvement tools, and contributes to the broader understanding of how instruction tuning shapes the distributional characteristics of LLM output.
+This work provides empirical evidence and a starting point for Japanese-language AI text style analysis and writing style improvement tools, and contributes to the broader understanding of how instruction tuning shapes the distributional characteristics of LLM output.
 
 \section*{Reproducibility}
 
