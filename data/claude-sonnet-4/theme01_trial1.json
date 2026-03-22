@@ -1,0 +1,10 @@
+{
+  "model": "claude-sonnet-4",
+  "theme_index": 1,
+  "theme": "Docker入門 — コンテナ化のメリットと始め方",
+  "trial": 1,
+  "response": "# Docker入門 — コンテナ化のメリットと始め方\n\n## Dockerとは\n\nDockerは、アプリケーションをコンテナと呼ばれる軽量で可搬性の高い実行環境にパッケージ化するプラットフォームです。コンテナ化技術により、開発から本番環境まで一貫した実行環境を提供します。\n\n## コンテナ化のメリット\n\n### 1. 環境の一貫性\n- 開発、テスト、本番環境で同じコンテナを使用\n- 「自分の環境では動くのに...」問題の解決\n- OS やライブラリのバージョン差異による問題を回避\n\n### 2. 軽量性と高速起動\n- 仮想マシンと比較して圧倒的に軽量\n- 秒単位での起動・停止が可能\n- システムリソースの効率的な利用\n\n### 3. スケーラビリティ\n- 必要に応じてコンテナを簡単に複製\n- マイクロサービスアーキテクチャに最適\n- 負荷に応じた自動スケーリングが容易\n\n## Dockerの基本概念\n\n- **イメージ**: アプリケーションとその依存関係をパッケージ化したテンプレート\n- **コンテナ**: イメージから作成される実行中のインスタンス\n- **Dockerfile**: イメージを構築するための設定ファイル\n\n## 始め方\n\n### 1. Dockerのインストール\n\n```bash\n# Ubuntu/Debian\nsudo apt update\nsudo apt install docker.io\n\n# macOS (Homebrew)\nbrew install docker\n\n# Windows\n# Docker Desktopを公式サイトからダウンロード\n```\n\n### 2. 基本コマンド\n\n```bash\n# イメージの取得\ndocker pull nginx\n\n# コンテナの実行\ndocker run -d -p 8080:80 --name my-nginx nginx\n\n# 実行中のコンテナ確認\ndocker ps\n\n# コンテナの停止\ndocker stop my-nginx\n\n# コンテナの削除\ndocker rm my-nginx\n```\n\n### 3. Dockerfileの作成\n\n```dockerfile\n# ベースイメージを指定\nFROM node:18-alpine\n\n# 作業ディレクトリを設定\nWORKDIR /app\n\n# package.jsonをコピー\nCOPY package*.json ./\n\n# 依存関係をインストール\nRUN npm install\n\n# アプリケーションコードをコピー\nCOPY . .\n\n# ポートを公開\nEXPOSE 3000\n\n# アプリケーションを起動\nCMD [\"npm\", \"start\"]\n```\n\n### 4. イメージのビルドと実行\n\n```bash\n# Dockerfileからイメージを構築\ndocker build -t my-app .\n\n# 構築したイメージからコンテナを実行\ndocker run -p 3000:3000 my-app\n```\n\n## まとめ\n\nDockerは現代的な開発・運用において必須の技術です。コンテナ化により、アプリケーションの可搬性、スケーラビリティ、開発効率が大幅に向上します。まずは簡単なWebアプリケーションをコンテナ化することから始めて、徐々に複雑なアーキテクチャに挑戦してみましょう。\n\n継続的な学習により、DevOps文化の導入やクラウドネイティブな開発スタイルを身につけることができます。",
+  "char_count": 1492,
+  "elapsed_sec": 14.63,
+  "timestamp": "2026-03-22T23:40:18.545438"
+}

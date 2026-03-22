@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 3,
+  "theme": "GitHubActionsでCI/CDを構築する方法",
+  "trial": 1,
+  "response": "# GitHub Actions で CI/CD を 5 分で構築する実践ガイド\n\n現代のソフトウェア開発では、継続的インテグレーション（CI）と継続的デリバリー（CD）が標準となっています。GitHub にはそのための強力なツール「GitHub Actions」が内蔵されています。今回は、これを使ってプロジェクトの品質を高めつつ、リリースプロセスを自動化する方法を紹介します。\n\n## GitHub Actions とは？\n\nGitHub Actions は、`.github/workflows` ディレクトリに YAML ファイル（ワークフローファイル）を作成するだけで、コードのコミットやプルリクエストイベントを検知し、指定されたタスクを実行してくれる仕組みです。\n\n## 基本構成要素\n\nワークフローファイルは以下の 3 つの要素から成り立ちます。\n\n*   **Trigger**: いつ実行するか（Push, PR, Schedule など）\n*   **Job**: どの環境で実行するか（Linux, Windows, macOS など）\n*   **Step**: 具体的に何をやるか（npm install, build, deploy など）\n\n## 簡単なワークフロー例\n\n以下のコードを `.github/workflows/ci-cd.yml` に保存するだけで、CI と CD が起動します。\n\n```yaml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  build-and-test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n      \n      - name: Install dependencies\n        run: npm ci\n        \n      - name: Run tests\n        run: npm test\n      \n      - name: Build\n        run: npm run build\n\n  deploy:\n    needs: build-and-test\n    if: github.event_name == 'push' && github.ref == 'refs/heads/main'\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Deploy to Server\n        run: |\n          echo \"Deployment script goes here\"\n          # 例：ssh や curl を使ってサーバーへデプロイ\n```\n\n## 実装のポイント\n\n1.  **モジュールの活用**: `actions` マーケットプレイスには、Node.js の設定や Docker イメージ準備など、便利なアクションが多数あります。必要に応じてリポジトリからカスタムアクションを登録することも可能です。\n2.  **セキュリティ対策**: 敏感な情報（API キー等）は `.github/workflows/secrets.yml` に秘密として格納するか、環境変数として管理し、ワークフローファイルに直接記述しないことが重要です。\n3.  **並列実行**: `needs` キーを使ってジョブを依存関係で繋ぎつつ、非同期のテストや静的解析を並列化することでビルド時間を短縮できます。\n\n## まとめ\n\nGitHub Actions を導入すれば、手動でのデプロイミスを防ぎつつ、開発サイクルを大幅に加速できます。まずは簡単なワークフローから始め、徐々に機能を追加していくのがおすすめです。今すぐ `.github/workflows` ディレクトリを作成して、自動化の世界へようこそ！",
+  "thinking": "",
+  "char_count": 1899,
+  "elapsed_sec": 79.22,
+  "timestamp": "2026-03-23T00:03:13.032349"
+}

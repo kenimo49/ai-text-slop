@@ -1,0 +1,12 @@
+{
+  "model": "swallow-20b",
+  "model_id": "gpt-oss:20b",
+  "theme_index": 9,
+  "theme": "AIを活用したコードレビューの自動化",
+  "trial": 1,
+  "response": "# AIを活用したコードレビューの自動化\n\n## 背景  \n- **開発速度の向上**：レビュー時間を短縮し、デプロイまでのリードタイムを短くする  \n- **品質一貫性**：人間の主観を排除し、統一した基準でコードを評価  \n- **新人育成**：自動フィードバックで学習サイクルを加速\n\n## 主な技術要素  \n- **LLM（Large Language Model）**  \n  - GitHub CopilotやOpenAI GPT‑4などを利用し、コード文脈を理解  \n- **静的解析ツールとの連携**  \n  - ESLint, Flake8, SonarQube などのルールベースと併用  \n- **CI/CD パイプラインへの統合**  \n  - PR 時に自動実行し、コメントを直接 PR に投稿\n\n## ワークフロー例  \n```yaml\n# GitHub Actions での設定例\nname: AI Code Review\non: pull_request\njobs:\n  review:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - name: Run AI Review\n        uses: my-org/ai-review-action@v1\n        with:\n          repo-token: ${{ secrets.GITHUB_TOKEN }}\n          model: gpt-4o\n```\n\n## 具体的なフィードバック例  \n| コード | AI のコメント |\n|--------|---------------|\n| `for i in range(len(arr)):` | 「`len` を呼び出すより `for i, v in enumerate(arr):` のほうが可読性が高い」 |\n| `if x == 0:` | 「`==` は比較、`is` は同一性。`is` を使うケースは `None` 等に限定」 |\n\n## 注意点  \n- **誤検知への対処**：AI の判断は 100% 正しいわけではない。レビュー結果は必ず人が確認する  \n- **プライバシー**：ソースコードを外部モデルへ送る際は暗号化やオンプレミス LLM の検討  \n- **費用対効果**：モデル使用料と開発者の時間削減を比較し、導入判断を行う\n\n## まとめ  \nAI を活用したコードレビューは、**速度**と**品質**の両立を可能にします。既存の静的解析と組み合わせ、CI/CD に組み込むことで、開発フローをスムーズにしつつ、開発者の負担を軽減できます。導入は小規模な PR から始め、結果を定量的に評価しながらスケールアップしていくのが成功の鍵です。",
+  "thinking": "The user wants a technical blog article in Japanese, about AI-powered automated code review. 800 characters? They said 800字程度, which is around 800 Japanese characters. They want Markdown format with headings, bullet points, code examples. Should be about 800 characters, not 800 words. So roughly 800 Chinese characters? Japanese characters count. 800 characters is about 400 words. So we need to produce about 800 Japanese characters. Let's aim for 800-850 characters. We'll use headings, bullet lists, code example. Use markdown. Keep within 800 characters. Let's produce about 800 characters. Let's count roughly. Each Japanese character counts. We'll produce maybe 800. We'll try to keep within that. Use bullet lists. Provide code snippet in e.g. Python or shell. Let's do. We'll produce in Japanese. Let's write.",
+  "char_count": 1228,
+  "elapsed_sec": 67.11,
+  "timestamp": "2026-03-23T01:22:53.789377"
+}

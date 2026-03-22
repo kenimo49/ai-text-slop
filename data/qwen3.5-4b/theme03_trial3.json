@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 3,
+  "theme": "GitHubActionsでCI/CDを構築する方法",
+  "trial": 3,
+  "response": "# GitHub Actions で CI/CD を構築する実践的ガイド\n\nソフトウェア開発において、継続的インテグレーション（CI）と継続的デリバリー（CD）は品質維持と迅速なリリースを実現する鍵です。その中で、GitHub の組み込み機能である **GitHub Actions** は、Git リポジトリ内にコードを書くだけで自動化を構築できるため、多くの開発者が採用しています。ここでは、基本的な CI/CD パイプラインの構築方法を解説します。\n\n## 1. `.github/workflows` ディレクトリの役割\n\nGitHub Actions の定義は、リポジトリ内の `.github/workflows` フォルダにある YAML ファイルに記述されます。この形式は、実行条件やステップを明確に定義し、バージョン管理しやすい利点があります。\n\n### 基本的なワークフロー構造例\n\n以下は、コード変更を検知した際に自動実行される最も単純な構成です。\n\n```yaml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  test-and-build:\n    runs-on: ubuntu-latest\n    \n    steps:\n      - name: Checkout コード\n        uses: actions/checkout@v3\n\n      - name: Node モジュールのインストールとテスト実行\n        run: |\n          npm ci\n          npm test\n```\n\nこのスクリプトは、`push` または `pull_request` イベントがトリガーされ、最新バージョンの Ubuntu 環境でチェックアウトされたコードに依存します。その後、Node.js のモジュールを再構築し、テストスイートを実行することで、バグを早期発見する CI プロセスを実現しています。\n\n## 2. デプロイメントステップの追加\n\nCI に続いて CD を実装するには、ビルド後やテスト成功時にデプロイ作業を加える必要があります。ここでは、GitHub Pages への静的サイトホスト例を示します。\n\n```yaml\n      - name: GitHub Pages ホスト\n        uses: peaceiris/actions-gh-pages@v3\n        with:\n          github_token: ${{ secrets.GITHUB_TOKEN }}\n          publish_dir: ./public\n```\n\nこのステップでは、`secrets.GITHUB_TOKEN` を利用して秘密情報を安全に管理し、ビルドされた成果物を GitHub Pages に公開します。これにより、開発者はローカル環境で動作を確認するだけで、世界中のユーザーへコンテンツを提供できるようになります。\n\n## 3. 実装のポイントとベストプラクティス\n\n- **セキュリティ**: 外部サービスへの接続や設定ファイルには必ず `secrets` を使用し、ハードコーディングを避けること。\n- **マルチプラットフォーム**: `runs-on: ubuntu-latest` の他、Windows や macOS でも実行可能に設定することで、環境依存の問題を防ぐこと。\n- **エラーハンドリング**: `continue-on-error: true` などを適切に設定し、単一のテスト失敗が全プロセスを停止しないよう調整すること。\n\nGitHub Actions は柔軟性が高く、複雑なビルドやコンテナ化も可能です。上記の構造をベースに、自社の技術スタックに合わせてカスタマイズすることで、効率的な CI/CD パイプラインを構築できると考えます。まずはシンプルなワークフローから始めて、段階的に機能を拡張していくことをお勧めします。",
+  "thinking": "",
+  "char_count": 1766,
+  "elapsed_sec": 10.92,
+  "timestamp": "2026-03-22T23:43:11.640510"
+}

@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 2,
+  "theme": "REST APIの設計ベストプラクティス",
+  "trial": 3,
+  "response": "# REST API 設計のベストプラクティス：保守性と拡張性のためのガイド\n\nREST API を設計する際、単に「動く」だけでなく、「将来も使い続けられるか」が重要です。今回は、開発チーム間での理解を深め、長期的な保守性を高めるためのベストプラクティスについて解説します。\n\n## 1. リソース指向の設計ルール\n\nREST の本質は、データ（リソース）を操作することにあります。以下の原則を守りましょう。\n\n*   **名詞で URL を構成する**:動詞を含めない\n*   **一貫性のある HTTP メソッドを使用**\n    *   `GET`: 読み取り（不変）\n    *   `POST`: 作成\n    *   `PUT`: 全更新\n    *   `PATCH`: 部分更新\n    *   `DELETE`: 削除\n\n### コード例：適切な設計 vs 不適切な設計\n\n**× 不適切な設計（動詞混在、リソース不統一）**\n```http\nGET /users/getUser/123      # メソッドの意味不明\nPOST /users/update          # リソース指定なし\nDELETE /user/delete?id=1    # URL に ID を含めるべき\n```\n\n**〇 推奨される設計**\n```http\nGET    /users/123\nPOST   /users\nPUT    /users/123\nPATCH  /users/123\nDELETE /users/123\n```\n\n## 2. エラーハンドリングとステータスコード\n\nクライアントが予期せぬエラーに直面した際、明確なメッセージを返す必要があります。HTTP ステータスコードを正しく使い分けましょう。\n\n*   `2xx`: 成功（`200 OK`, `201 Created`）\n*   `4xx`: クライアントエラー（`400 Bad Request`, `404 Not Found`, `422 Unprocessable Entity`）\n*   `5xx`: サーバーエラー（`500 Internal Server Error`）\n\n特に、バリデーションエラーの場合は `422 Unprocessable Entity` を使い、具体的な原因を JSON で返すことが重要です。\n\n```json\n// 422 Unprocessable Entity の例\n{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"入力値に誤りがあります\",\n    \"details\": [\n      {\n        \"field\": \"email\",\n        \"issue\": \"形式が不正です\"\n      }\n    ]\n  }\n}\n```\n\n## 3. レイテンシ削減のための最適化\n\nAPI のレスポンスサイズを小さくし、クライアントの負荷を下げる工夫も必要です。\n\n*   **フィルタリングとページネーション**: `?limit=10&page=1` のようなパラメータでデータを制御する。\n*   **フィールド選択**: GraphQL ができない場合でも、クエリパラメータで取得したいフィールドを指定できるようにする（例：`GET /users?id=1&fields=name,email`）。\n\n## 結論\n\nREST API は「一度設計すれば永続する資産」です。当初の設計段階で上記のベストプラクティスを取り入れることで、後からのリファクタリングコストを大幅に削減できます。チーム全体で共通の規約（API Gateway やドキュメント生成ツールを活用）を整え、質の高い API を提供しましょう。",
+  "thinking": "",
+  "char_count": 1625,
+  "elapsed_sec": -177.92,
+  "timestamp": "2026-03-23T00:01:51.813711"
+}

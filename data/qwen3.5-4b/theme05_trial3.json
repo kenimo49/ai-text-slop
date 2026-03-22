@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 5,
+  "theme": "データベースインデックスの仕組みと最適化",
+  "trial": 3,
+  "response": "# データベースインデックスの仕組みと最適化戦略\n\nデータベース性能は、システムのボトルネックになりやすい部分です。その中でも特に重要なのが「インデックス」の知識です。今回は、B-Tree の構造から始まって、実際のプロジェクトで最適なインデックスを設計するためのポイントを解説します。\n\n## インデックスとは何か？\n\nインデックスとは、データファイルにアクセスしやすくするための仕組みであり、本質的には「辞書」のような役割を果たします。特定の列（または列の組み合わせ）に対して検索速度を劇的に向上させるために、データの順序で並べられた付加構造を作成します。\n\n*   **B-Tree**: MySQL のデフォルトインデックスは B-Tree です。データを昇順・降順にソートした木構造であり、二項探索アルゴリズムを用いることで、巨大なデータセットでも O(log n) の時間計算量で検索が可能です。\n*   **メリット**: `WHERE` 条件や `ORDER BY` クエリが高速化します。\n*   **デメリット**: データの追加・更新時に再構築が必要になるため、パフォーマンスが低下し、ディスク使用量が増加します。\n\n## インデックスの設計ルール\n\n「いっさいインデックスをかけるな」という格言がありますが、それは「必要な場所にだけかける」ことの意味です。以下のようなケースで優先してインデックスを作成しましょう。\n\n### 1. WHERE 条件の列\n検索頻度の高いフィールドに作成します。\n```sql\nCREATE INDEX idx_user_email ON users (email);\n-- email で検索されるクエリが高速化されます\nSELECT * FROM users WHERE email = 'test@example.com';\n```\n\n### 2. ORDER BY の列\nデータソート時に使用される列です。\n```sql\nCREATE INDEX idx_order_date ON orders (created_at DESC);\n-- 最新順にソートされたクエリが最適化されます\nSELECT * FROM orders ORDER BY created_at DESC;\n```\n\n### 3. 結合条件の列\n他のテーブルと JOIN を行う際に使用されるキーです。\n```sql\nCREATE INDEX idx_customer_id ON orders (customer_id);\n-- customer_id で JOIN されるクエリが高速化されます\nSELECT * FROM orders o JOIN customers c ON o.customer_id = c.id;\n```\n\n## 複合インデックスの活用\n\n単一列だけでなく、複数の列で検索する場合は「複合インデックス」を作成します。重要なポイントは、**左側から右側の順序で検索条件が並んでいること**です。\n\n```sql\n-- 検索条件: 都市 (city) と 名前 (name) の両方\nCREATE INDEX idx_city_name ON customers (city, name);\n\n-- ✅ 有効: city が一致し、その中から name で検索\nSELECT * FROM customers WHERE city = 'Tokyo' AND name = 'A';\n\n-- ❌ 無効: 逆順の場合、name の検索はインデックスが使えない可能性があります\n```\n\n## 結論と次のステップ\n\n適切なインデックス設計は、データベースのレスポンス速度を決定づけます。しかし、過度なインデックス作成は逆にシステム全体を重くするリスクがあります。定期的な `EXPLAIN` コマンドによるクエリ分析を行い、実際にインデックスが効いているか確認し続けることが重要です。\n\nまずは主要な検索条件を特定し、複合インデックスの概念を理解することから始めてみてください。",
+  "thinking": "",
+  "char_count": 1718,
+  "elapsed_sec": 23.47,
+  "timestamp": "2026-03-22T23:45:37.621535"
+}

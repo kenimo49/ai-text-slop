@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 3,
+  "response": "# React のパフォーマンス最適化：高速な UI を実現する 3 つの鍵\n\nReact は強力ですが、状態管理が複雑になるとレンダリング性能に課題が出ることがあります。特に初期画面や長文字リストなどで「ジワジワ遅い」現象を感じた経験はありませんか？ここでは、実務で効果的な最適化手法を解説します。\n\n## 1. メモ化の正解：`useMemo` と `useCallback`\n\nReact は関数コンポーネントが再レンダリングされるたびに props や状態を検証し、新しい関数や配列を生成してしまいます。これを避けるために、`useMemo`（計算結果）と `useCallback`（関数定義）を活用します。\n\n```tsx\n// 非最適化：每次都新規作成される関数\nconst handleClick = () => {\n  console.log('Click');\n};\n\n// 最適化：参照が安定化し、不要な再レンダリングを防ぐ\nconst handleClick = useCallback(() => {\n  console.log('Click');\n}, []); // 依存配列は空にして恒常的に保持\n\n// 計算も同様。重い処理の結果を一度だけ算出\nconst filteredData = useMemo(() => {\n  return data.filter(item => item.active);\n}, [data]);\n```\n※注意点：依存配列に不要なプロパティが含まれていると、意図せず再レンダリングが発生します。\n\n## 2. リストの最適化：`React.memo` とキー指定\n\n大量のデータを表示するリストでは、全要素が再描画されるのが一般的です。これを防ぐには、個別コンポーネントを `React.memo` でラップし、プロパティ変更時のみ更新させることができます。さらに、`key` プロパティを適切に設定することで、DOM 操作の効率を劇的に向上させます。\n\n```tsx\n// React.memo で不要な再描画を防ぐ\nconst UserCard = React.memo(({ name, age }) => (\n  <div>ユーザー：{name}, {age} 歳</div>\n));\n\n// key プロパティは必ず指定（ID を用いるのがベスト）\n<ul>\n  {users.map((user) => (\n    <UserCard key={user.id} name={user.name} age={user.age} />\n  ))}\n</ul>\n```\n\n## 3. 状態管理の最小化：`useReducer` と `useContext`\n\n複雑な状態遷移を扱う場合は、`useState` の多次元配列やオブジェクトによるネストが可読性を損ない、デバッグも困難になります。`useReducer` を採用し、単一の状態オブジェクトとアクション型を定義することで、論理構造を明確にできます。また、グローバルな状態を渡す `useContext` は適切に使い分ける必要があります。\n\n```tsx\n// useReducer で状態遷移を一元管理\nconst [state, dispatch] = useReducer(reducer, initialState);\n\nfunction reducer(state, action) {\n  switch (action.type) {\n    case 'ADD_ITEM':\n      return [...state, action.payload];\n    default:\n      return state;\n  }\n}\n```\n\n## まとめ\n\nReact のパフォーマンス向上は、単一テクニックで解決されるものではありません。`useMemo`/`useCallback` で不要な再計算を防ぎ、`React.memo` と `key` でリストの描画効率を高め、複雑なロジックでは `useReducer` を活用することが重要です。プロジェクトに適用してみて、実際の FPS やレンダリング時間を測定し、必要なところから最適化を実践しましょう。",
+  "thinking": "",
+  "char_count": 1808,
+  "elapsed_sec": 24.41,
+  "timestamp": "2026-03-22T23:41:04.930092"
+}

@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 1,
+  "response": "# React のパフォーマンス最適化：高速な UI 開発の鍵\n\nReact は現在最も人気のあるフロントエンドフレームワークの一つですが、複雑なアプリケーションではリロードや画面切り替わりでの遅延が発生することがあります。本記事では、React を高速にするための主要な最適化テクニックについて解説します。\n\n## React のレンダリング原理とボトルネック\n\nReact は「虚構（Virtual DOM）」という概念に基づいて動作します。実際の DOM 操作を行う前に、メモリ上の木構造を作成し、差分計算を行い、効率的に要素を更新します。しかし、この仕組みには弱点があります。\n\n*   **不要な再レンダリング**: コンポーネントのプロパティが変更された場合、そのコンポーネントのすべての子孙（子孫）コンポーネントが再計算されてしまいます。\n*   **キープロパティの重要性**: `key` プロパティが指定されていない場合、リストの要素を再配置する際に React が DOM 操作を誤って行い、パフォーマンスが著しく低下します。\n\n## 具体的な最適化テクニック\n\n以下に実務で効果的な手法をいくつか紹介します。\n\n### 1. useMemo と useReducer の活用\n\n計算コストがかかる値や複雑なステート管理を行う場合、関数呼び出しのたびに再計算されてしまうのを防ぎます。\n\n```jsx\nimport { useMemo } from 'react';\n\nfunction ExpensiveComponent({ data }) {\n  // data が変更されたら毎回計算されるため、避ける必要があります\n  const processedData = data.map(item => item * 2); \n  \n  return <div>{processedData}</div>;\n}\n\n// 最適化版：データが変化しない限り、関数内で計算結果をキャッシュします。\nfunction OptimizedComponent({ data }) {\n  const processedData = useMemo(() => {\n    return data.map(item => item * 2);\n  }, [data]); // データのみが変更されたら更新されます\n\n  return <div>{processedData}</div>;\n}\n```\n\n### 2. React.memo の使用\n\nコンポーネント自体の計算コストを削減するために、`React.memo` を使用します。これにより、プロパティの変更が検出されてから実際にレンダリングされるまでを抑制できます。\n\n```jsx\nimport React from 'react';\n\nconst SimpleComponent = React.memo(({ value }) => {\n  return <div>{value}</div>;\n});\n\n// プロパティが変わらない限り、SimpleComponent は再描画されません。\n```\n\n### 3. リストのキー指定と分割レンダリング\n\n`<ul>` や `<table>` の要素は、`key` プロパティを必ず指定する必要があります。また、巨大なリストは一度に全てレンダリングせず、スクロールエリア内にしか表示されない部分だけを計算する「無限スコープ（Infinite Scroll）」や「分割レンダリング」も有効です。\n\n## 結論\n\nReact のパフォーマンス最適化は、単一の魔法の杖で解決できるものではなく、アプリケーションの構造を理解した上で段階的にアプローチする必要があります。`useMemo`、`useCallback`、`React.memo` などの Hooks を適切に組み合わせ、不要な計算や描画を防ぐことが、スリッとしたユーザー体験を実現する鍵となります。",
+  "thinking": "",
+  "char_count": 1692,
+  "elapsed_sec": 23.55,
+  "timestamp": "2026-03-22T23:40:07.866471"
+}

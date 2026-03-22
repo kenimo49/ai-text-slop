@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 6,
+  "theme": "WebSocketを使ったリアルタイム通信の実装",
+  "trial": 1,
+  "response": "# WebSocket で実現する「遅延のない」リアルタイム通信の構築\n\nWeb アプリケーションにおいて、双方向かつ低遅延な通信が必要なシーンが増えています。チャット機能、株価表示、ライブストリーミングなど、従来の HTTP リクエスト/レスポンスでは不十分な場合、**WebSocket** が最適解となります。今回はその実装方法と重要な考慮点について解説します。\n\n## WebSocket とは何か？\n\nWebSocket は、TCP 接続を維持したまま、サーバーとクライアント間で双方向にデータを継続的に送受信するためのプロトコルです。HTTP のように「リクエスト - レスポンス」で通信が終了するのではなく、一度接続が確立すれば長期間のセッションを維持できます。\n\n## 実装のステップ\n\n### 1. サーバー側でのセットアップ（Node.js + ws の例）\n\nまず、サーバー側で WebSocket サーバーを作成します。以下のコードは Node.js と `ws` パッケージを使用した最小限の実装例です。\n\n```javascript\nconst WebSocket = require('ws');\nconst wss = new WebSocket.Server({ port: 8080 });\n\nwss.on('connection', (ws) => {\n  console.log('新しいクライアントが接続されました');\n\n  // クライアントからのメッセージ受信\n  ws.on('message', (message) => {\n    console.log(`受信：${message}`);\n    // サーバーから全てのクライアントへブロードキャスト\n    wss.clients.forEach(client => {\n      if (client !== ws && client.readyState === WebSocket.OPEN) {\n        client.send(message);\n      }\n    });\n  });\n\n  ws.on('close', () => {\n    console.log('クライアントが切断しました');\n  });\n});\n```\n\n### 2. クライアント側での接続（JavaScript）\n\n次に、ブラウザサイドで WebSocket に接続し、データを送受信します。`fetch API` や `XMLHttpRequest` では不可能なリアルタイム更新が可能になります。\n\n```javascript\nconst socket = new WebSocket('ws://localhost:8080');\n\nsocket.onopen = () => {\n  console.log('接続成功');\n  socket.send('こんにちは、サーバー！');\n};\n\nsocket.onmessage = (event) => {\n  const data = event.data;\n  console.log(`サーバーから受信：${data}`);\n  // UI 更新処理などをここに記述\n};\n\nsocket.onerror = (error) => {\n  console.error('通信エラー:', error);\n};\n\nsocket.onclose = () => {\n  console.log('接続が閉じられました');\n};\n```\n\n## 重要な考慮点：再接続とスケーリング\n\n実務では、以下の点を意識して設計する必要があります。\n\n*   **再接続（リカバリー）**: ネットワーク不安定により切断される可能性があります。クライアント側で定期的な Ping/Pong メッセージを送信し、接続切れを検知したら自動再接続ロジックを実装しましょう。\n*   **認証**: 接続時にトークンなどの認証情報をヘッダーに含めることで、未認証アクセスを防ぎます。\n*   **スケーリング**: サーバーの WebSocket 接続は通常プロセス固有です。複数サーバー環境で運用する場合は、Redis などを使ってグローバルなクライアントリストを共有する必要があります。\n\n## まとめ\n\nWebSocket は、ユーザー体験を劇的に向上させるための強力なツールです。ただし、単純な接続だけでは不十分であり、切断時の復旧やセキュリティ対策が必須となります。要件に応じて適切に設計することで、滑らかなリアルタイムアプリケーションを構築できます。",
+  "thinking": "",
+  "char_count": 1960,
+  "elapsed_sec": 85.39,
+  "timestamp": "2026-03-23T00:15:03.905873"
+}

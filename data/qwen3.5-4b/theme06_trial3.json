@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 6,
+  "theme": "WebSocketを使ったリアルタイム通信の実装",
+  "trial": 3,
+  "response": "# WebSocket によるリアルタイム通信の実装ガイド\n\n現代の Web アプリケーションでは、サーバーとクライアントが常時接続された「リアルタイム通信」は必須機能になっています。HTTP のリクエスト応答モデルでは、ユーザーがアクションを起こすまでデータを受け取れないため、チャットや株価情報表示などには不向きです。そこで活躍するのが**WebSocket**です。\n\n## なぜ WebSocket なのか？\n\nWebSocket は TCP ベースの双方向通信プロトコルです。初期化後に接続が確立されると、サーバーとクライアントは常に両向きのデータを送受信できます。これにより、以下のメリットがあります：\n\n*   **低遅延**: HTTP のオーバーヘッドを排除し、リアルタイム性を確保\n*   **常時接続**: サーバー側からプッシュ通知が可能\n*   **省資源**: 接続維持コストが HTTP 短縮（HTTP/2 などのマルチプレックス）よりも低い場合がある\n\n## 基本的な実装フロー\n\n実装の中心は「接続建立」「メッセージ送信・受信」「ハンドリング」の 3 つです。ここでは Node.js の `ws` モジュールとブラウザでの実例を示します。\n\n### サーバー側（Node.js）\n\n以下のコードでサーバーを起動し、クライアントからの接続を待ちます。接続が確立すると、自動的にメッセージを送信するデモを実行します。\n\n```javascript\nconst WebSocket = require('ws');\nconst wss = new WebSocket.Server({ port: 8080 });\n\nwss.on('connection', (ws) => {\n    console.log(`新しいクライアント ${ws.readyState} で接続`);\n\n    // クライアントに「Hello」を送信\n    ws.send('こんにちは！リアルタイム通信を開始しました。');\n\n    // クライアントからのメッセージ受信イベント\n    ws.on('message', (data) => {\n        const message = data.toString();\n        console.log(`受信箱: ${message}`);\n        \n        // 即時に返信する例\n        ws.send(`あなたから受信：${message} を処理しました。`);\n    });\n\n    // クライアントの切断イベント\n    ws.on('close', () => {\n        console.log('接続が終了しました');\n    });\n});\n```\n\n### クライアント側（JavaScript）\n\nブラウザ上で WebSocket を初期化し、サーバーへのメッセージを送信するサンプルです。\n\n```javascript\nconst socket = new WebSocket('ws://localhost:8080');\n\nsocket.onopen = function(event) {\n    console.log('WebSocket 接続が確立されました');\n};\n\nsocket.onmessage = function(event) {\n    const data = event.data;\n    console.log(data); // サーバーからの返答を表示\n};\n\nsocket.onerror = function(error) {\n    console.error('WebSocket エラー:', error);\n};\n\nsocket.onclose = function(event) {\n    console.log('接続が閉じられました');\n};\n\n// クライアントからサーバーへメッセージを送信\nsocket.send('こんにちは！');\n```\n\n## 実装上の注意点\n\n1.  **セキュリティ**: WebSocket の URL は `ws://` または `wss://` で指定する必要があります。通信が暗号化されるよう、HTTPS を利用する際は WSS が必須です。\n2.  **エラーハンドリング**: ネットワーク遅延やサーバー障害により切断が発生することが多いため、常に `onclose` イベントを監視し、再接続ロジックを実装すべきです。\n3.  **メッセージ形式**: JSON などを標準化して利用すると、データ構造の管理が容易になります。\n\n## まとめ\n\nWebSocket を活用することで、ユーザー体験を劇的に向上させることができます。サーバー側でイベントドリブンな処理を行い、クライアント側は即座に反応できるようになるため、チャットアプリやゲーム、通知システムなど、対話型アプリケーション開発において不可欠な技術です。まずはシンプルなデモから始め、徐々に複雑なプロトコル定義（JSON-RPC 等）を取り入れることで、より高度な機能を実装していきましょう。",
+  "thinking": "",
+  "char_count": 2208,
+  "elapsed_sec": 24.86,
+  "timestamp": "2026-03-22T23:46:50.272011"
+}

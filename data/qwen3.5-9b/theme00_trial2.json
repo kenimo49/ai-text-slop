@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 2,
+  "response": "# React パフォーマンス最適化の要：3 つの原則\n\nReact アプリが重くなる原因は多くの場合、「不要な再レンダリング」にあります。効率的な開発のため、以下の 3 つの原則を徹底しましょう。\n\n## 1. メモ化戦略の活用\n\nコンポーネントや関数が頻繁に再実行されるのを防ぐには、`useMemo` や `useCallback` を適切に使い分けます。\n\n### コード例：メモ化の実装\n\n```tsx\nimport { useMemo, useCallback } from 'react';\n\nfunction ExpensiveComponent({ items, onClick }) {\n  // 計算結果が変化しない限り再利用される\n  const filteredItems = useMemo(() => {\n    return items.filter(item => item.status === 'active');\n  }, [items]);\n\n  // イベントハンドラーを安定化させる\n  const handleClick = useCallback(() => {\n    console.log('Clicked!');\n  }, []);\n\n  return (\n    <div>\n      {filteredItems.map(item => <li key={item.id}>{item.name}</li>)}\n      <button onClick={handleClick}>Click me</button>\n    </div>\n  );\n}\n```\n\n## 2. リストの最適化\n\n大量のデータを持つリストでは、すべての要素に `key` を渡す必要があります。また、DOM を直接操作する代わりに、React の仮想 DOM 機構を信じてください。\n\n### 注意点\n- `map()` で返す配列の長さが劇的に変わるとパフォーマンスが低下します。スクロール時の追加・削除処理には慎重になる必要があります。\n- 画像などの重いリソースは、`<img>` タグに `loading=\"lazy\"` を指定するか、ライブラリ（如て `react-lazy-load-image-component`）を使って遅延読み込みを実装しましょう。\n\n## 3. レンダリングの分割\n\n一つのコンポーネントが巨大すぎる場合、React はその全要素を再計算しようとします。必要な部分だけを分割し、小規模なコンポーネントに分解するのが効果的です。\n\n### ベストプラクティス\n- **高度と低さの分離**: 状態管理を行う親コンポーネントと、表示ロジックを持つ子コンポーネントに分ける。\n- **コード分割（Lazy Loading）**: ルート以外の画面遷移先は `React.lazy` と `Suspense` を使ってロード遅延化を実装し、初期パケットサイズを小さく保ちます。\n\n## まとめ\n\nパフォーマンス最適化は「すべてをメモ化する」ことではありません。プロファイルツール（Chrome DevTools の Performance タブ）を使い、ボトルネックとなっている箇所を特定してから対策を取りましょう。\n\nまずは `useMemo` と `useCallback` の正しい使い分けから始め、必要に応じてコンポーネント分割やコード分割へ進めてください。",
+  "thinking": "",
+  "char_count": 1471,
+  "elapsed_sec": 69.07,
+  "timestamp": "2026-03-22T23:53:08.999488"
+}

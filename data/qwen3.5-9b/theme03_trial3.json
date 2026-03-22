@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 3,
+  "theme": "GitHubActionsでCI/CDを構築する方法",
+  "trial": 3,
+  "response": "# GitHub Actions で CI/CD を構築する完全ガイド\n\n現代のソフトウェア開発では、継続的インテグレーション（CI）と継続的デプロイメント（CD）が不可欠です。その中でも特に手軽に始められる「GitHub Actions」は、Git のコミットやプルリクエストをトリガーとして自動的にコードを実行・デプロイする仕組みを提供します。\n\n本記事では、GitHub Actions を利用して CI/CD パイプラインを構築する方法を解説します。\n\n## GitHub Actions とは？\n\nGitHub Actions は、GitHub 上に用意されたワークフローファイル（`.yml`）を読み込んで、指定したタスクを実行する CI/CD ツールです。主な特徴は以下の通りです。\n\n*   **コードベースとの親和性**: Git リポジトリ内にファイルを置くだけで設定できるため、外部ツールを導入する必要がありません。\n*   **豊富なマーケットプレイス**: 世界中の開発者が作成したアクション（パッケージ）を即座に利用可能です。\n*   **インテグレーション**: GitHub の Issues や Pull Request との連携がスムーズです。\n\n## ワークフローファイルの基本構造\n\nCI/CD パイプラインの設定は、リポジトリルートにある `.github/workflows` ディレクトリ内に YAML ファイルを作成することで行います。以下に基本的な構成例を示します。\n\n```yaml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  build-and-test:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n\n      - name: Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Run tests\n        run: npm test\n\n      - name: Build application\n        run: npm run build\n```\n\nこの例では、`main` ブランチへのプッシュまたはプルリクエストがあった際、以下の手順が実行されます。\n\n1.  **Checkout**: リポジトリのコードをダウンロードします。\n2.  **Setup Node.js**: 必要な環境（ここでは Node.js 20）を準備します。\n3.  **Install dependencies**: パッケージ管理ツールで依存関係をインストールします。\n4.  **Run tests**: テストを実行し、品質を保証します。\n5.  **Build application**: 最終的なビルドを行います。\n\n## セキュリティへの配慮とベストプラクティス\n\n自動化を推進する際、セキュリティは重要な課題です。特に機密情報（API キーやパスワード）を YAML ファイルに直接記述することは避けてください。\n\nGitHub Secrets を利用して情報を安全に管理しましょう。\n\n```yaml\n- name: Deploy to Production\n  env:\n    DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}\n    DATABASE_URL: ${{ secrets.DATABASE_URL }}\n  run: |\n    echo \"Deploying with secure credentials...\"\n    npm run deploy --token=$DEPLOY_TOKEN\n```\n\n## まとめ\n\nGitHub Actions は、設定ファイルの記述だけで強力な CI/CD システムを構築できます。まずは簡単なテスト実行から始め、徐々にビルドやデプロイステップを追加していくことで、チームの生産性を大幅に向上させられます。ぜひ導入を検討してみてください。",
+  "thinking": "",
+  "char_count": 1960,
+  "elapsed_sec": 84.51,
+  "timestamp": "2026-03-23T00:05:58.009120"
+}

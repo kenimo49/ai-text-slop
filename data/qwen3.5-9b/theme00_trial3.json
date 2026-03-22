@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 3,
+  "response": "# React パフォーマンス最適化の核心：再レンダリング制御とメモ化\n\nReact アプリが動作しなくなる原因の一つに「不必要な再レンダリング」があります。コンポーネントが頻繁に更新されると、DOM 操作や計算処理のオーバーヘッドが増大します。ここでは、その対策を 3 つのポイントで解説します。\n\n## 1. 不要な再レンダリングを避ける `React.memo`\n\n親コンポーネントの状態変更により、子コンポーネントが意図せず更新されるケースがあります。これは「純粋な表示コンポーネント」であれば防ぐことができます。\n\n```jsx\n// メモ化なし：親が更新すると毎回再レンダリング\nconst Child = ({ name }) => <div>{name}</div>;\n\n// メモ化あり：props が変わらなければ再レンダリングしない\nconst MemoizedChild = React.memo(({ name }) => <div>{name}</div>);\n```\n\n`React.memo` を使用することで、Virtual DOM の比較コストを削減し、パフォーマンスを向上させることができます。ただし、過度な使用はコンポーネントの階層を複雑にするため注意が必要です。\n\n## 2. 重い計算処理のメモ化 `useMemo` と `useCallback`\n\n関数定義自体の変更や、重い計算ロジックの実行を防ぐには、Hooks を活用します。\n\n```jsx\n// 毎回再計算されるのを防ぐ\nconst expensiveCalculation = useMemo(() => {\n  return data.items.map(item => item.price * 1.1).reduce((a, b) => a + b, 0);\n}, [data.items]);\n\n// 子コンポーネントへの渡す関数を安定化させる\nconst handleSave = useCallback(() => {\n  api.save(formData);\n}, [formData]);\n```\n\n`useMemo` は値、`useCallback` は関数に対して有効です。これにより、依存配列が変更されない限り結果や関数の参照が維持され、子コンポーネントの再レンダリング連鎖を断ち切ります。\n\n## 3. 分割レンダリング（コード分割）\n\n巨大なアプリケーションでは、初期ロード時のバンドルサイズが大きくなります。`React.lazy` と `Suspense` を組み合わせることで、必要なモジュールをオンデマンドで読み込みます。\n\n```jsx\nconst HeavyComponent = React.lazy(() => import('./HeavyComponent'));\n\nreturn (\n  <Suspense fallback={<Spinner />}>\n    <HeavyComponent />\n  </Suspense>\n);\n```\n\nこれにより、ユーザーが特定の機能ページへ遷移した際にのみ関連リソースを読み込むため、ファーストビューの表示速度を大幅に改善できます。\n\n## まとめ\n\nパフォーマンス最適化は「全部速くする」のではなく、「必要な時に必要なだけ処理する」ことが鍵です。`React.memo`、`useMemo`、コード分割を状況に応じて使い分けることで、スケーラブルでレスポンシブな React アプリを作成しましょう。",
+  "thinking": "",
+  "char_count": 1503,
+  "elapsed_sec": 72.94,
+  "timestamp": "2026-03-22T23:54:23.936482"
+}

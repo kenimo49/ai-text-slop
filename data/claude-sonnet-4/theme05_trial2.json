@@ -1,0 +1,10 @@
+{
+  "model": "claude-sonnet-4",
+  "theme_index": 5,
+  "theme": "データベースインデックスの仕組みと最適化",
+  "trial": 2,
+  "response": "# データベースインデックスの仕組みと最適化\n\n## インデックスとは何か\n\nデータベースインデックスは、検索性能を向上させるためのデータ構造です。書籍の索引のように、特定のデータを素早く見つけるためのポインタの集合と考えることができます。\n\nインデックスがない場合、データベースは全てのレコードを順次確認する必要がありますが、インデックスがあることで対象データを効率的に特定できます。\n\n## インデックスの主な種類\n\n### B-treeインデックス\n最も一般的なインデックス形式で、以下の特徴があります：\n\n- **バランス木構造**：検索、挿入、削除の計算量がO(log n)\n- **範囲検索に最適**：ORDER BYやBETWEEN句で威力を発揮\n- **等価検索にも効果的**：WHERE句の条件マッチング\n\n### ハッシュインデックス\n- **等価検索に特化**：完全一致検索で高速\n- **範囲検索には不向き**：順序性を持たない\n\n## インデックス作成の実例\n\n```sql\n-- 基本的なインデックス作成\nCREATE INDEX idx_user_email ON users(email);\n\n-- 複合インデックス\nCREATE INDEX idx_order_date_status ON orders(order_date, status);\n\n-- 部分インデックス（条件付き）\nCREATE INDEX idx_active_users ON users(last_login) \nWHERE status = 'active';\n```\n\n## 最適化のベストプラクティス\n\n### 効果的なインデックス設計\n\n- **カーディナリティを考慮**：値の種類が多いカラムほどインデックス効果が高い\n- **複合インデックスの順序**：よく検索される条件を左側に配置\n- **必要最小限に抑制**：インデックスは更新処理のオーバーヘッドを増加させる\n\n### パフォーマンス分析\n\n```sql\n-- 実行計画の確認（PostgreSQL例）\nEXPLAIN ANALYZE SELECT * FROM users \nWHERE email = 'user@example.com';\n\n-- インデックス使用状況の確認\nSELECT \n    schemaname,\n    tablename,\n    indexname,\n    idx_tup_read,\n    idx_tup_fetch\nFROM pg_stat_user_indexes;\n```\n\n## よくあるアンチパターン\n\n### 1. 過度なインデックス作成\n- **問題**：メモリ使用量増加、更新処理の低下\n- **対策**：定期的な使用状況監視と不要インデックスの削除\n\n### 2. 関数適用後の検索\n```sql\n-- 悪い例：インデックスが使用されない\nSELECT * FROM users WHERE UPPER(name) = 'JOHN';\n\n-- 良い例：関数ベースインデックスまたは正規化\nCREATE INDEX idx_users_name_upper ON users(UPPER(name));\n```\n\n### 3. 先頭ワイルドカード検索\n```sql\n-- インデックスが効かない\nSELECT * FROM products WHERE name LIKE '%laptop%';\n\n-- 全文検索インデックスの活用を検討\n```\n\n## まとめ\n\nインデックスは適切に使用すれば劇的な性能向上をもたらしますが、設計には慎重さが必要です。定期的な監視と分析を行い、アプリケーションの使用パターンに合わせて最適化を継続することが重要です。",
+  "char_count": 1596,
+  "elapsed_sec": 17.71,
+  "timestamp": "2026-03-22T23:44:54.901920"
+}

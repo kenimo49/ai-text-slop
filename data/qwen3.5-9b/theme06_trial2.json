@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 6,
+  "theme": "WebSocketを使ったリアルタイム通信の実装",
+  "trial": 2,
+  "response": "# WebSocket で実現する即時更新：リアルタイム通信の実装ガイド\n\nWeb サイトが「読み込み待ち」から「常に最新の情報」と向かう中で、WebSocket はその鍵となります。HTTP のリクエスト -レスポンスモデルでは不向きな、双方向の即時通信を実現しましょう。\n\n## なぜ WebSocket か？\n\n従来の HTTP（AJAX や Fetch API）は、ブラウザからの問いかけに対してサーバーが答える一方通行です。これに対し、WebSocket は接続を確立した上で**双方が自由に行き来**できるパイプのような存在です。\n\n*   **低遅延**: 手間の少ない通信でデータを送受信可能\n*   **双方向性**: サーバーからのお知らせ（チャット通知など）も即座に到達\n*   **長期間接続**: 一度接続すれば、多数のメッセージを効率的に送受信\n\n## 実装のポイント：サーバーサイド\n\nまず、Python の `websockets` ライブラリを使った簡易的なサーバー例を確認します。\n\n```python\nimport websockets\n\nasync def handler(websocket):\n    async for message in websocket:\n        # クライアントからのメッセージを受け取り、返す\n        await websocket.send(f\"受信しました：{message}\")\n\n# サーバー起動\nstart_server = websockets.serve(handler, \"localhost\", 8765)\nprint(\"サーバーが起動しました\")\n```\n\n## ブラウザサイドでの接続\n\n次に、JavaScript でこのサーバーに接続し、メッセージの送受信を行います。\n\n```javascript\nconst socket = new WebSocket('ws://localhost:8765');\n\nsocket.onopen = () => {\n  console.log('接続成功');\n  // サーバーへ送信\n  socket.send('こんにちは！');\n};\n\nsocket.onmessage = (event) => {\n  console.log(`サーバーからのメッセージ：${event.data}`);\n};\n\nsocket.onerror = (error) => {\n  console.error('通信エラー:', error);\n};\n\nsocket.onclose = () => {\n  console.log('接続が閉じられました');\n};\n```\n\n## 注意点とベストプラクティス\n\n実装する際は、以下の点を意識してください。\n\n*   **コネクション管理**: ネットワーク不安定時に再接続ロジックを必ず実装する\n*   **セキュリティ**: プロダクション環境では WSS (HTTPS) を使用し、認証機能を実装する\n*   **負荷分散**: 大量の接続がある場合、サーバーサイドでのスケーリング設計が必要\n\n## まとめ\n\nWebSocket は、チャットアプリや株価グラフ、ライブスコアなど、**「今まさに起きていること」**を表現したい場合に不可欠な技術です。HTTP との違いを理解し、双方向の通信でユーザー体験を一段と高めてみませんか？",
+  "thinking": "",
+  "char_count": 1466,
+  "elapsed_sec": 66.91,
+  "timestamp": "2026-03-23T00:16:12.818126"
+}

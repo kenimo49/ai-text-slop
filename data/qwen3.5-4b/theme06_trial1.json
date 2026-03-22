@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 6,
+  "theme": "WebSocketを使ったリアルタイム通信の実装",
+  "trial": 1,
+  "response": "# WebSocket を活用したリアルタイム通信の構築\n\nHTTP のリクエスト応答型では対応が困難な「双方向・即時性」を実現するために、WebSocket は現代 Web 開発において不可欠な技術です。本記事では、Node.js と Socket.IO を使用した基本的な実装方法について解説します。\n\n## WebSocket と HTTPの違い\n\n通常の HTTP プロトコルは「リクエスト → レスポンス」の一方通行かつ非同期通信に最適化されています。これに対し、WebSocket は TCP 接続を確立し、クライアントとサーバーが常時双方向で通信可能なチャネルを提供します。これにより、ユーザー操作やイベント発生に伴う即座のフィードバックが可能になります。\n\n## Node.js + Socket.IO の実装例\n\nSocket.IO は WebSocket をベースとしたオープンソースライブラリであり、自動接続管理やエラーハンドリングなどをサポートしています。以下に簡易なサーバーとクライアントの実装を示します。\n\n**server.js（サーバー側）**\n```javascript\nconst io = require('socket.io')(3000);\n\nio.on('connection', (socket) => {\n  console.log(`ユーザーが接続しました：${socket.id}`);\n\n  // サーバーからクライアントへのメッセージ送信\n  socket.on('chat message', (msg) => {\n    socket.emit('chat message', msg);\n  });\n\n  socket.on('disconnect', () => {\n    console.log(`ユーザーが切断されました：${socket.id}`);\n  });\n});\n```\n\n**index.html（クライアント側）**\n```html\n<script src=\"/socket.io.js\"></script>\n<script>\n  const socket = io.connect('http://localhost:3000');\n\n  // キーボード入力からサーバーへ送信\n  document.getElementById('chat').addEventListener('keydown', (e) => {\n    if (e.key === 'Enter') {\n      socket.emit('chat message', document.getElementById('message').value);\n      document.getElementById('message').value = '';\n    }\n  });\n\n  // サーバーからのメッセージを受信\n  socket.on('chat message', (msg) => {\n    const chatDiv = document.createElement('div');\n    chatDiv.textContent = `サーバー: ${msg}`;\n    document.getElementById('chat').appendChild(chatDiv);\n  });\n</script>\n```\n\n## 実装のポイントとベストプラクティス\n\n- **接続の安定化**: Socket.IO は WebSocket の他にも HTTP などのフォールバックをサポートするため、ネットワーク環境の変化に強い。\n- **イベント名の一貫性**: クライアントとサーバー間で使用するイベント名の統一が重要。命名規則を定めておく。\n- **セキュリティ対策**: 認証トークンの検証や、通信データの暗号化（WSS の使用）を忘れないこと。\n\n## まとめ\n\nWebSocket を活用することで、チャットアプリやゲーム、株価表示ボードなど、リアルタイム性が要求されるアプリケーションの構築が可能になります。サーバーサイドの制御とクライアント側の UI 更新をスムーズに行い、ユーザー体験を向上させるための基礎となる技術です。",
+  "thinking": "",
+  "char_count": 1816,
+  "elapsed_sec": 18.73,
+  "timestamp": "2026-03-22T23:45:58.354318"
+}

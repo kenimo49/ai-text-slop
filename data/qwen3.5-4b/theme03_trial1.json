@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 3,
+  "theme": "GitHubActionsでCI/CDを構築する方法",
+  "trial": 1,
+  "response": "# GitHub Actions で効率的な CI/CD を構築する実践的なガイド\n\n開発プロセスを自動化し、品質とスピードを両立させるために、GitHub Actions の活用は現代のソフトウェア開発において必須です。今回は、基本的なセットアップから本番環境へのデプロイまでを含んだ CI/CD パイプラインの構築方法を解説します。\n\n## GitHub Actions の特徴と利点\n\nGitHub Actions は、コミットをトリガーとしてワークフローを実行する自動化ツールです。\n*   **統合性**: Git と CI/CD が同じプラットフォーム内で完結するため、設定が簡単で管理コストが低い。\n*   **コミュニティ**: 数百のプレビルトアクションが利用可能。\n*   **スケーラビリティ**: 必要に応じてリソースを拡張可能。\n\n## 基本的なワークフロー作成\n\nまずは `.github/workflows/` ディレクトリに `ci.yml` という名前のファイルを作成します。以下のコードは、開発中の各コミット時に自動でテストを実行し、結果をレポートする最小限のセットアップです。\n\n```yaml\n# .github/workflows/ci.yml\nname: CI Pipeline\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    \n    steps:\n      - name: Checkout コード\n        uses: actions/checkout@v3\n      \n      - name: Node モジュールのインストール\n        run: npm install\n        \n      - name: テスト実行\n        run: npm test\n```\n\n## 本番環境へのデプロイ（CD）ステップを追加する\n\nテストが成功すれば、本番環境へ自動的にデプロイする CD ステップを組み合わせます。ここでは、サーバー管理ツールとして **AWS ECS** を想定し、`aws-actions/setup-aws-creds` や `aws-actions/amazon-ecr-login` を利用した例を示します。\n\n```yaml\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    needs: test # テストが完了してから実行\n    \n    steps:\n      - name: Checkout コード\n        uses: actions/checkout@v3\n      \n      - name: Docker イメージのビルドとプッシュ\n        uses: docker/build-push-action@v4\n        with:\n          push: true\n          tags: myapp:${{ github.run_number }}\n      \n      - name: EC2 にデプロイ (例)\n        run: |\n          # 実際の環境に合わせたスクリプト実行\n          aws ecs update-service \\\n            --cluster $CLUSTER_ID \\\n            --service-name $SERVICE_NAME \\\n            --force-new-deployment\n```\n\n## 実装上の注意点とベストプラクティス\n\n1.  **セキュリティ**: 機密情報（API キーなど）は `secrets` を使用し、ワークフローファイルに明記しないように注意してください。\n2.  **エラーハンドリング**: `needs` ステートメントを活用して、前工程の失敗で後工程が停止されるよう設定します。\n3.  **マルチプラットフォーム対応**: テストやビルド時に異なる OS や Node バージョンが必要であれば、`runs-on: macos-latest` や `node-version: '16'` などを指定してください。\n\n## 結論\n\nGitHub Actions を適切に活用することで、チームのコーディングスタイルを統一し、バグを早期に発見・修正することができます。まずは上記のコード例をベースに、ご自身の技術スタックに合わせてステップを追加していきましょう。",
+  "thinking": "",
+  "char_count": 2021,
+  "elapsed_sec": 9.03,
+  "timestamp": "2026-03-22T23:42:46.255095"
+}

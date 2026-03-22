@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 1,
+  "response": "# React アプリケーションのパフォーマンス最適化テクニック\n\nReact が普及するにつれ、アプリケーションの規模も大きくなり、パフォーマンス問題に直面することが多くなりました。スムーズなユーザー体験を提供するためには、適切な最適化手法の理解が不可欠です。\n\n## 基本的な考え方：必要な箇所だけを最適化する\n\nまず忘れてはいけないのは、**「全体的に最適化する」のではなく、「ボトルネックになっている箇所に絞る」**という原則です。無意味な最適化は開発コストを無駄にする原因になります。\n\n1. **プロファイリングを行う**\n   - Chrome DevTools の Performance 機能や React Profiler を利用し、レンダリングに時間がかかるコンポーネントを特定しましょう。\n2. **过早期最適化を避ける**\n   - 初期段階で高度なテクニックを使うよりも、まずはコードの簡素化や意図的な分割から始めます。\n\n## メモリと描画コストの削減\n\nReact のパフォーマンス向上において最も効果的な手法は、不要な再レンダリングを防ぐことです。\n\n### 1. `React.memo` の活用\n子コンポーネントが親コンポーネントの状態変化で再レンダリングされるのを防ぐために使用します。\n\n```jsx\n// メモ化された子コンポーネント\nconst UserCard = React.memo(({ user }) => {\n  return (\n    <div>\n      <h2>{user.name}</h2>\n      <p>{user.email}</p>\n    </div>\n  );\n});\n\n// props が変わらなければ再レンダリングされない\n<UserCard user={currentUser} />\n```\n\n### 2. `useMemo` と `useCallback`\n計算コストの高い処理や関数の再作成を防ぎます。\n\n```jsx\n// 重い計算をメモ化\nconst expensiveData = useMemo(() => {\n  return processLargeDataset(filter);\n}, [filter]);\n\n// 親コンポーネントの再レンダリング時に子コンポーネントに渡す関数を安定化\nconst handleSave = useCallback(() => {\n  saveData();\n}, [saveData]);\n```\n\n## コンポーネントの分割とコード分割\n\n巨大なコンポーネントはパフォーマンスだけでなく保守性も低下させます。\n\n- **機能ごとの分割**: 画面を小さな単位に分解し、必要な部分のみレンダリングできるようにします。\n- **動的インポート**: 初期ロード時に関数を使わないモジュールを遅延読み込み（コード分割）することで、ファーストビューの表示速度を向上させます。\n\n```jsx\nimport { lazy, Suspense } from 'react';\n\nconst HeavyChart = lazy(() => import('./HeavyChart'));\n\nfunction Dashboard() {\n  return (\n    <Suspense fallback={<Spinner />}>\n      <HeavyChart />\n    </Suspense>\n  );\n}\n```\n\n## まとめ\n\nパフォーマンス最適化は一度きりの作業ではなく、継続的な改善プロセスです。常にプロファイリングを行い、データに基づいて課題を解決していきましょう。",
+  "thinking": "",
+  "char_count": 1567,
+  "elapsed_sec": 83.14,
+  "timestamp": "2026-03-22T23:51:57.924613"
+}

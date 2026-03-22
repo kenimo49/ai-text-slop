@@ -1,0 +1,12 @@
+{
+  "model": "swallow-20b",
+  "model_id": "gpt-oss:20b",
+  "theme_index": 5,
+  "theme": "データベースインデックスの仕組みと最適化",
+  "trial": 2,
+  "response": "# データベースインデックスの仕組みと最適化  \n\n## 1. インデックスとは  \n- **検索を高速化**するための補助構造  \n- **B‑Tree / B+Tree** が最も一般的  \n  - 節点はキーと子ノードへのポインタを持つ  \n  - ディスク上のページ単位で構成され、**階層が浅い**ほどアクセスが速い  \n\n## 2. B+Tree の内部構造  \n```text\nroot\n ├─ key1 → nodeA\n ├─ key2 → nodeB\n └─ key3 → nodeC\n```\n- **葉ノード**に実際の行へのポインタ（ROWID）  \n- すべての葉は **リンクリスト** で連結 → 範囲検索が O(log n)  \n\n## 3. インデックスの種類  \n| 種類 | 目的 | 主な構造 |\n|------|------|----------|\n| **クラスタ化** | データ行をキー順に格納 | B+Tree（行と同じページ） |\n| **非クラスタ化** | 追加のポインタで別ページに格納 | B+Tree（ポインタのみ） |\n| **全文検索** | 文字列検索 | Inverted Index |\n| **ジオメトリ** | 空間検索 | R‑Tree |\n\n## 4. インデックスのメリット・デメリット  \n- **メリット**  \n  - SELECT 時の I/O 減少  \n  - ORDER BY / GROUP BY が高速化  \n- **デメリット**  \n  - INSERT/UPDATE/DELETE 時の更新オーバーヘッド  \n  - ストレージ使用量増加  \n\n## 5. 最適化のポイント  \n1. **使用頻度の高い列にだけ作成**  \n   - 例: `WHERE user_id = ?` 用のインデックス  \n2. **複合インデックス**  \n   - `CREATE INDEX idx_user_date ON orders(user_id, order_date);`  \n   - 先頭列が検索条件に使われると効果大  \n3. **カーディナリティを考慮**  \n   - 高カーディナリティ（多様な値）→効果的  \n   - 低カーディナリティ（少数値）→インデックスを避ける  \n4. **統計情報の更新**  \n   - `ANALYZE` で統計を最新に保ち、クエリプランが正しく選択されるようにする  \n5. **インデックスの再構築**  \n   - 断片化が進むと検索が遅くなる → `REBUILD INDEX`  \n\n## 6. 実際の例（PostgreSQL）  \n```sql\n-- 1. 単一列インデックス\nCREATE INDEX idx_customer_name ON customers(name);\n\n-- 2. 複合インデックス\nCREATE INDEX idx_order_user_date\n  ON orders(user_id, order_date DESC);\n\n-- 3. カバーリングインデックス（必要列だけを含む）\nCREATE INDEX idx_order_total\n  ON orders(order_id, total_amount);\n\n-- 4. インデックスの再構築\nALTER INDEX idx_customer_name REBUILD;\n```\n\n## 7. まとめ  \nインデックスは検索性能を劇的に向上させる一方、更新コストやストレージを増やす副作用があります。  \n- **「必要な列にだけ、適切な構造で」**  \n- **統計情報を常に最新に保ち、クエリプランが最適化されるように**  \nこれらを意識すれば、データベースのパフォーマンスを安定して高めることができます。",
+  "thinking": "We need to write a technical blog article in Japanese, 800 characters roughly? Actually 800字程度, meaning about 800 characters, not words. But we can produce around 800 Japanese characters, maybe 800-1000. Use Markdown with headings, bullet points, code examples. The topic: データベースインデックスの仕組みと最適化. Provide explanation of index mechanism and optimization. Use markdown headings, bullet lists, code examples. Let's produce about 800-900 characters. We should keep within about 800 characters, but we can produce a bit more. It's okay. Let's write.",
+  "char_count": 1631,
+  "elapsed_sec": 83.78,
+  "timestamp": "2026-03-23T01:02:05.202372"
+}

@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-4b",
+  "model_id": "qwen3.5:4b",
+  "theme_index": 7,
+  "theme": "セキュリティを考慮したJWT認証の設計",
+  "trial": 1,
+  "response": "# セキュリティを考慮した JWT 認証の設計実践\n\n現在、多くの Web アプリケーションで JSON Web Token (JWT) が採用されています。その利便性から、セキュリティ対策が不十分な実装も増えています。本記事では、盗難や改ざんを防ぐための重要な設計原則とコード例を紹介します。\n\n## 1. トークンの有効期限を設定する\n\n永続的なトークンを使用すると、一旦不正に取得されると攻撃者が常駐し続けます。必ず短期の有効期限（`exp` クレーム）を設定してください。\n\n```typescript\nconst payload = {\n  sub: 'user-123',\n  iat: Math.floor(Date.now() / 1000), // 発行数\n  exp: Math.floor(Date.now() / 1000) + 3600 // 1 時間後有効\n};\n```\n\n## 2. トークンの公開鍵は絶対公開せず\n\nJWT は「署名検証」が中心ですが、公開鍵自体を公開するとリスクが高まります。理想としては、公開鍵はサーバー側のみが保有し、クライアント側では非公開の秘密鍵で署名を検証できる仕組み（例：OAuth2 での PKCE）や、暗号化されたトークン形式を検討すべきです。\n\n## 3. ハッシュ関数と塩値を使用する\n\nもしパスワードも JWT に含める場合、必ず SHA-256 や SHA-384 などのハッシュ関数并使用します。また、同じユーザーでも毎回異なる「塩」を付加し、リプレーン攻撃を防ぎます。\n\n```python\nimport secrets\nfrom cryptography.hazmat.primitives import hashes\nfrom cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2\n\n# 固定のパスワードとランダムな塩を作成\nsalt = secrets.token_bytes(32)\npassword_hash = pbkdf2(password, salt, iterations=100000, algorithm=hashes.SHA_256)\n```\n\n## 4. トークンの改ざんを検証する\n\n署名アルゴリズムとして HS256 または RS256 を使い、任意の値で署名を検証する必要があります。これにより、トークン内容が変更された際にサーバー側で即座に拒否できます。\n\n## まとめ\n\nJWT は強力な認証手段ですが、有効期限の設定、公開鍵の管理、ハッシュ化、署名検証など、セキュリティを考慮した設計が不可欠です。これらの原則を遵守し、常に最新の実装ガイドラインに従うことが、堅牢なシステム構築の鍵となります。",
+  "thinking": "",
+  "char_count": 1184,
+  "elapsed_sec": 16.67,
+  "timestamp": "2026-03-22T23:47:08.941394"
+}

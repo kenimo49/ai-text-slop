@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 3,
+  "theme": "GitHubActionsでCI/CDを構築する方法",
+  "trial": 2,
+  "response": "# GitHub Actions で CI/CD を構築する基本手順\n\n近年、ソフトウェア開発のスピード向上には継続的インテグレーション（CI）と継続的デリバリー（CD）が不可欠です。その中でも特に手軽に始められ、強力なツールとして定着しているのが**GitHub Actions**です。本稿では、ゼロから GitHub Actions を使って CI/CD パイプラインを構築する方法を紹介します。\n\n## なぜ GitHub Actions なのか？\n\nGitHub にネイティブに含まれているため、追加のインストールや複雑な設定なしにすぐに利用可能です。YAML ファイル（Workflow）で記述することで、バージョン管理と実行ロジックが一元管理でき、チーム間の共有も容易です。\n\n## 基本構造：`.github/workflows`\n\nまず、リポジトリのルート目录下 `.github/workflows` フォルダを作成し、ビルドやデプロイの自動化を定義する YAML ファイル（例：`ci.yml`）を置きます。\n\n基本的なワークフローファイルの構成は以下の通りです。\n\n```yaml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  build-and-deploy:\n    runs-on: ubuntu-latest\n    \n    steps:\n      - name: Checkout repository\n        uses: actions/checkout@v4\n      \n      - name: Set up Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n      \n      - name: Install dependencies\n        run: npm ci\n      \n      - name: Run tests (CI)\n        run: npm test\n      \n      - name: Build application\n        run: npm run build\n      \n      # 成功時にのみデプロイ実行（CD）\n      - name: Deploy to server\n        if: success()\n        run: |\n          echo \"Deploying to production...\"\n          # 実際のデプロイコマンドをここに記述\n```\n\n## 重要なポイント\n\n### 1. トリガーの制御\n`on:` セクションで実行条件を設定します。通常は `push`（プッシュ時）や `pull_request`（プルリクエスト作成時）を指定しますが、スケジュールによる自動実行やマニフェストファイル変更時など、用途に応じて柔軟に設定できます。\n\n### 2. ジョブとステップ\n1 つのワークフロー内には複数の「ジョブ」があり、それぞれが独立して実行されます。「ステップ」は特定のアクション（公式またはサードパーティ製）を指します。並列実行もサポートされているため、テストと静的解析などを同時に走らせることで時間を短縮できます。\n\n### 3. 機密情報の保護\nAPI トークンや秘密鍵などの機密情報は、GitHub Secrets（`secrets`）に登録し、ワークフロー内で `${{ secrets.TOKEN_NAME }}` のように参照します。これにより、ログへの漏洩を防ぎます。\n\n## まとめ\n\nGitHub Actions を活用することで、手動でのビルドやデプロイ作業から解放され、開発者が創造的な業務に集中できます。最初はシンプルなテスト自動化から始め、徐々に機能を拡張していくのがおすすめです。",
+  "thinking": "",
+  "char_count": 1755,
+  "elapsed_sec": 76.47,
+  "timestamp": "2026-03-23T00:04:31.500779"
+}

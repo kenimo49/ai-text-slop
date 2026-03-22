@@ -1,0 +1,10 @@
+{
+  "model": "gpt-4o",
+  "theme_index": 3,
+  "theme": "GitHubActionsでCI/CDを構築する方法",
+  "trial": 2,
+  "response": "# GitHub ActionsでCI/CDを構築する方法\n\nGitHub Actionsは、ソフトウェア開発のワークフローを自動化するための強力なツールです。CI/CD（継続的インテグレーション／デリバリー）パイプラインを構築することで、コードの品質を維持しつつ迅速にリリースサイクルを進めることができます。この記事では、GitHub Actionsを用いて基本的なCI/CDパイプラインを構築する方法について解説します。\n\n## GitHub Actionsの基本\n\nGitHub Actionsでは、**ワークフロー**を定義することで自動化を実現します。ワークフローは、リポジトリ内の`.github/workflows`ディレクトリにYAMLファイルとして保存されます。各ワークフローは、イベントトリガー、ジョブ、およびステップで構成され、条件に応じたジョブの実行を可能にします。\n\n## CI/CDパイプラインの設定\n\nこのセクションでは、簡単なNode.jsプロジェクトを例に、CI/CDパイプラインを構築します。目的は、コードのプッシュとプルリクエスト時にテストを実行し、`main`ブランチへのマージ時にデプロイメントを行うことです。\n\n### 1. リポジトリの準備\n\nまず、GitHubで新しいリポジトリを作成し、Node.jsプロジェクトをセットアップします。\n\n- Node.jsとnpmをインストール済みであることを確認\n- プロジェクトディレクトリで以下を実行し、プロジェクトを初期化\n\n```bash\nnpm init -y\n```\n\n- 必要なテストフレームワーク（例：Jest）をインストール\n\n```bash\nnpm install --save-dev jest\n```\n\n### 2. ワークフローの作成\n\n次に、`.github/workflows`ディレクトリを作成し、CI用のYAMLファイルを追加します。\n\n```yaml\n# .github/workflows/ci.yml\nname: CI\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v2\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v2\n        with:\n          node-version: '14'\n\n      - name: Install dependencies\n        run: npm install\n\n      - name: Run tests\n        run: npm test\n```\n\n### 3. デプロイメント\n\nデプロイメントは要求に基づいてプロバイダ固有の設定が必要です。ここではNetlifyを例に、手動での設定を行います。\n\n- Netlifyで新しいサイトを作成し、GitHubリポジトリと連携\n- `main`ブランチが更新されたときにデプロイが行われるよう設定\n\n### まとめ\n\nGitHub Actionsを使ったCI/CDパイプラインの基本を説明しました。この設定により、コードの品質を自動で検証し、安定した環境でデプロイを行う基盤が整いました。ワークフローをさらにカスタマイズし、タグ付けによるリリースや別環境へのデプロイなど、プロジェクトに応じた自動化を進めることも可能です。CI/CDの効率化を図りながら、ソフトウェア開発をよりスムーズに進めましょう。",
+  "char_count": 1635,
+  "elapsed_sec": 10.44,
+  "timestamp": "2026-03-22T23:52:43.963144"
+}

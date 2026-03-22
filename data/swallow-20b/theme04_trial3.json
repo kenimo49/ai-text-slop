@@ -1,0 +1,12 @@
+{
+  "model": "swallow-20b",
+  "model_id": "gpt-oss:20b",
+  "theme_index": 4,
+  "theme": "TypeScriptの型システムを活かした安全な開発",
+  "trial": 3,
+  "response": "## TypeScriptの型システムを活かした安全な開発\n\nTypeScriptはJavaScriptに型を付与することで、実行前に多くのバグを検出できます。  \n型安全を意識した開発を行うことで、保守性・拡張性が格段に向上します。\n\n### 型安全のメリット\n\n- **コンパイル時チェック**  \n  変数・関数の型ミスマッチを即座に検出。  \n- **IDE補完**  \n  型情報に基づくオートコンプリートで開発速度が上がる。  \n- **ドキュメント化**  \n  型がコードそのものの仕様書になる。  \n- **リファクタリングの安全性**  \n  型があると大規模変更時の不具合を抑えられる。\n\n### 主要な型機能\n\n| 機能 | 使いどころ |\n|------|------------|\n| **インターフェース** | オブジェクトの構造を明示 |\n| **ユニオン型** | 複数型を許容した柔軟性 |\n| **ジェネリクス** | 再利用可能な型定義 |\n| **型推論** | 明示しなくてもコンパイラが推測 |\n| **型ガード** | ランタイムで型を絞る |\n\n### コード例：ジェネリックリストコンポーネント\n\n```ts\ninterface ItemProps<T> {\n  items: T[];\n  renderItem: (item: T) => JSX.Element;\n}\n\nfunction List<T>({ items, renderItem }: ItemProps<T>) {\n  return <ul>{items.map(renderItem)}</ul>;\n}\n```\n\n- `T` を使うことで、文字列、数値、オブジェクトなど任意のデータ型に対応。  \n- コンパイル時に `items` と `renderItem` の型不整合を検出。\n\n### ベストプラクティス\n\n- **`any` は極力避ける**  \n  必要なら `unknown` を使い、型安全に変換。  \n- **型定義は一元化**  \n  `types/` ディレクトリにまとめ、再利用性を高める。  \n- **型を活用したテスト**  \n  型定義が変更された場合、型チェックでテストが失敗するように設計。  \n\n## まとめ\n\nTypeScriptの型システムは、バグを事前に排除し、開発者の生産性を向上させる強力なツールです。  \nプロジェクトに導入し、型を意識した設計を行うことで、長期的に見て保守コストを大幅に削減できます。",
+  "thinking": "The user wants an 800-character? Actually \"800字程度\" means around 800 characters in Japanese? They want a technical blog article in Japanese, 800 characters length, using markdown with headings, bullet points, code examples. Topic: TypeScript's type system for safe development. Provide markdown with headings, bullet lists, code examples. Should be about 800 Japanese characters. Let's produce about 800 Japanese characters (~600-800). We'll need to count approximate. Let's aim for about 800 characters. We'll produce a blog post with sections: Introduction, Benefits, Key Features, Example, Best Practices, Conclusion. Use bullet lists, code example. Let's approximate characters: each line maybe 10-20 characters. 800 characters is about 200-250 words. We'll produce about 250 words. Let's write. Use Japanese language. Use markdown headings (#, ##). Use bullet lists with \"-\". Provide code snippet with ```ts. Let's produce.",
+  "char_count": 1088,
+  "elapsed_sec": 68.53,
+  "timestamp": "2026-03-23T00:58:12.949329"
+}

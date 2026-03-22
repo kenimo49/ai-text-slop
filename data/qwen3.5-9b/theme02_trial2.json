@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.5-9b",
+  "model_id": "qwen3.5:9b",
+  "theme_index": 2,
+  "theme": "REST APIの設計ベストプラクティス",
+  "trial": 2,
+  "response": "# REST API 設計のベストプラクティス：保守性と拡張性の両立\n\nREST API は現代の Web サービスの基盤ですが、設計次第で長期運用が容易か、あるいは迅速に陳腐化するかを分けます。今回は、実務で重視すべき設計原則について解説します。\n\n## 1. リソース指向と HTTP メソッドの正しく使用\n\nAPI は「リソース」の操作として設計すべきです。HTTP メソッドの意味を厳格に守ることで、クライアント側での予測可能性が高まります。\n\n| メソッド | 意味 | 使用例 |\n| :--- | :--- | :--- |\n| **GET** | 読み取り（安全・イデムポテント） | `GET /users/123` |\n| **POST** | 作成（副作用あり） | `POST /users` |\n| **PUT/PATCH** | 更新（完全/部分的置換） | `PUT /users/123` <br> `PATCH /users/123` |\n| **DELETE** | 削除 | `DELETE /users/123` |\n\n## 2. ステートレスな認証とエラーハンドリング\n\nセッション管理をサーバー側で行わず、トークン方式を採用するのが一般的です。また、エラーは HTTP ステータスコードで明確に表現します。\n\n```json\n// 404 Not Found の例\n{\n  \"error\": {\n    \"code\": \"RESOURCE_NOT_FOUND\",\n    \"message\": \"指定されたユーザーが存在しません。\",\n    \"details\": [\n      {\n        \"field\": \"id\",\n        \"value\": \"999\"\n      }\n    ]\n  }\n}\n```\n\n## 3. パフォーマンスと可視化の工夫\n\n大量データを返す際は一括処理を行い、クライアントが不要なデータを受信しないようにフィールド指定（クエリパラメータや JSON Path）をサポートします。\n\n```http\nGET /products?status=active&category=electronics&page=1&limit=20\n```\n\nまた、API の動作状況を監視するために、レスポンスヘッダーにレート制限情報などを付与する慣習があります。\n\n```http\nHTTP/1.1 200 OK\nX-RateLimit-Limit: 100\nX-RateLimit-Remaining: 95\nX-Request-Id: a1b2c3d4e5f6\n```\n\n## まとめ\n\n優れた API 設計は、単に「動く」だけでなく、「使いやすく」「理解しやすい」ことが重要です。HTTP 標準を尊重し、エラー構造体を統一し、拡張性を考慮することで、将来的なメンテナンスコストを大幅に削減できます。まずは小さく始めて、フィードバックを得ながら進化させましょう。",
+  "thinking": "",
+  "char_count": 1270,
+  "elapsed_sec": 331.07,
+  "timestamp": "2026-03-23T00:04:47.733332"
+}

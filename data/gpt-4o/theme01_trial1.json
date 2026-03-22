@@ -1,0 +1,10 @@
+{
+  "model": "gpt-4o",
+  "theme_index": 1,
+  "theme": "Docker入門 — コンテナ化のメリットと始め方",
+  "trial": 1,
+  "response": "# Docker入門 — コンテナ化のメリットと始め方\n\n近年、ソフトウェア開発の現場で注目を集める技術の一つに「Docker」があります。Dockerはコンテナ技術を活用し、アプリケーションとその動作環境を一つのパッケージとして管理することが可能です。本記事では、Dockerの概要、コンテナ化のメリット、そしてDockerの基本的な始め方について紹介します。\n\n## コンテナ技術とは\n\nコンテナ技術は、アプリケーションの動作環境を軽量な「コンテナ」として提供するもので、必要なライブラリや設定を一式にまとめて管理できます。これは仮想マシン（VM）とは異なり、OSカーネルを共有するため、効率的かつ高速にアプリケーションを展開できます。\n\n## Dockerのメリット\n\nDockerを利用することで得られる主なメリットには以下のものがあります。\n\n- **環境の一貫性**: 開発環境、テスト環境、本番環境の設定を統一することで、環境の不一致による問題を軽減できます。\n- **スケーラビリティ**: コンテナを用いることで、必要な時にだけリソースを追加しやすくなります。\n- **迅速なデプロイ**: 数秒でコンテナを起動できるため、開発スピードが向上します。\n- **ポータビリティ**: Dockerイメージを作成することで、異なるプラットフォーム間での移行が容易になります。\n\n## Dockerの始め方\n\n### 1. Dockerのインストール\n\nまずは、Dockerをインストールする必要があります。各プラットフォームに対応したインストーラーが用意されていますので、公式サイトからダウンロードしてください。\n\n- [Docker Desktop for Windows](https://desktop.docker.com/windows/)\n- [Docker Desktop for Mac](https://desktop.docker.com/mac/)\n- [Docker Engine for Linux](https://docs.docker.com/engine/install/)\n\n### 2. Dockerの基本コマンド\n\nインストールが完了したら、基本的なDockerコマンドで操作してみましょう。\n\n```bash\n# Dockerのインストール確認\ndocker --version\n\n# Dockerの動作確認\ndocker run hello-world\n```\n\n上記の`docker run hello-world`を実行すると、Dockerは`hello-world`という名前のイメージを取得し、コンテナを実行します。これにより、Dockerが正しく動作していることを確認できます。\n\n### 3. Dockerfileの作成\n\nアプリケーションをコンテナ化するには、`Dockerfile`を作成します。`Dockerfile`には、コンテナの設定や依存関係を指定します。\n\n```Dockerfile\n# ベースイメージの指定\nFROM node:14\n\n# 作業ディレクトリを作成\nWORKDIR /app\n\n# アプリケーションの依存関係をインストール\nCOPY package*.json ./\nRUN npm install\n\n# アプリケーションソースのコピー\nCOPY . .\n\n# アプリケーションのポート番号\nEXPOSE 8080\n\n# アプリケーションの起動コマンド\nCMD [\"node\", \"app.js\"]\n```\n\n## まとめ\n\nDockerを用いることで、開発効率の向上や、運用環境の安定性を飛躍的に向上させることが可能です。本記事では基本的な使い方を紹介しましたが、さらに進んだ機能も多数存在します。ぜひDockerを活用し、モダンな開発環境を構築してみてください。",
+  "char_count": 1634,
+  "elapsed_sec": 11.54,
+  "timestamp": "2026-03-22T23:50:58.875228"
+}

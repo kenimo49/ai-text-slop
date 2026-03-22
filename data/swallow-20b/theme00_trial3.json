@@ -1,0 +1,12 @@
+{
+  "model": "swallow-20b",
+  "model_id": "gpt-oss:20b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 3,
+  "response": "# Reactのパフォーマンス最適化 ― 速く動くUIを作るためのベストプラクティス\n\nReactアプリはコンポーネント再描画が多いと、スムーズさが落ちます。  \nここでは、**再描画抑制**、**データ取得**、**ビルド最適化**の３つの観点から実践的なテクニックを紹介します。\n\n## 1. 再描画抑制\n- **`React.memo`**  \n  同じpropsで呼び出される関数コンポーネントをメモ化。  \n  ```tsx\n  const ListItem = React.memo(({ item }) => (\n    <li>{item.text}</li>\n  ));\n  ```\n- **`useCallback` / `useMemo`**  \n  コールバックや計算結果をメモ化し、子コンポーネントの再レンダリングを防ぐ。  \n  ```tsx\n  const onClick = useCallback(() => doSomething(id), [id]);\n  const computed = useMemo(() => expensiveCalc(data), [data]);\n  ```\n- **`shouldComponentUpdate`（クラスコンポーネント）**  \n  `PureComponent`を継承するか、`React.PureComponent`を使う。\n\n## 2. データ取得の最適化\n- **React Query / SWR**  \n  キャッシュとデータフェッチの自動再検証を行い、不要なリクエストを減らす。  \n- **`useDeferredValue`**  \n  ユーザー入力の遅延レンダリングで、入力に対する高速応答を確保。  \n  ```tsx\n  const deferred = useDeferredValue(value);\n  ```\n- **Lazy Loading**  \n  `React.lazy` と `Suspense` で必要なコンポーネントだけを読み込む。  \n  ```tsx\n  const HeavyComponent = React.lazy(() => import('./Heavy'));\n  ```\n\n## 3. ビルドとランタイムの最適化\n- **Tree Shaking**  \n  ESモジュールを使用し、未使用コードを除外。  \n- **コードスプリッティング**  \n  `react-router` の `React.lazy` と `Suspense` でページ単位に分割。  \n- **Service Worker / PWA**  \n  事前キャッシュで初回ロードを高速化。  \n- **画像最適化**  \n  `next/image` などで自動リサイズ・フォーマット変換。\n\n## まとめ\n- **再描画抑制**は`React.memo`・`useCallback`で実装。\n- **データ取得**はキャッシュライブラリと遅延レンダリングで高速化。\n- **ビルド**はコードスプリッティングとキャッシュでロード時間を短縮。\n\nこれらを組み合わせることで、Reactアプリは「速い」だけでなく「スムーズ」なユーザー体験を提供できます。ぜひプロジェクトに取り入れてみてください。",
+  "thinking": "We need to write a technical blog article in Japanese, 800 characters? Actually 800字程度 (around 800 characters). Use Markdown, headings, bullet points, code examples. Topic: React performance optimization. Provide concise, but about 800 Japanese characters. Should include headings, bullet points, code examples. Let's produce ~800 Japanese characters (~1200-1500 characters maybe). Let's target around 800 characters, not too long. Use markdown. Let's produce.",
+  "char_count": 1412,
+  "elapsed_sec": 64.75,
+  "timestamp": "2026-03-23T00:34:58.234323"
+}

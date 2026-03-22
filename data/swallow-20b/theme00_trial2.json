@@ -1,0 +1,13 @@
+{
+  "model": "swallow-20b",
+  "model_id": "gpt-oss:20b",
+  "theme_index": 0,
+  "theme": "Reactのパフォーマンス最適化",
+  "trial": 2,
+  "response": "Thinking...\nThe user wants a blog article about performance optimization in React, around 800 characters? They say \"800字程度\" which is 800 Japanese characters, not words. So roughly 800 characters (approx 400-500 words). Should be in Japanese. Should talk about performance optimization techniques: memo, useMemo, useCallback, lazy loading, code splitting, virtualization, avoiding unnecessary renders, use of keys, shouldComponentUpdate, React.memo, etc. Provide examples, best practices. Should be blog style, friendly tone. Aim for ~800 characters. Let's craft ~800 Japanese characters.\n\n800 Chinese characters: about 600-700 words? Actually Japanese characters count more. Let's approximate 800 characters. Let's write around 800 characters including punctuation.\n\nWill produce 800-ish characters. Let's produce ~800. I'll count roughly.\n\nI'll draft about 800 characters. Let's attempt. Count: Each Japanese character counts. Might need to approximate. Let's aim 800-850 characters.\n\nI'll write and then count roughly.\n...done thinking.\n\nReactはコンポーネントが増えるほど描画コストが上がりやすく、パフォーマンス最適化は開発者にとって必須です。ここでは実際に使えるテクニックを3つのポイントに絞って紹介します。\n\n**1. 不必要な再描画を防ぐ**  \n- **React.memo**：関数コンポーネントをラップし、propsが変わらない限り再描画を抑制します。  \n- **useCallback / useMemo**：関数や計算結果をメモ化し、子コンポーネントに渡す際に新しい参照を生成しないようにします。  \n- **shouldComponentUpdate**：クラスコンポーネントで同様の効果を得られます。  \n\n例）  \n```jsx\nconst Button = React.memo(({onClick, label}) => (\n  <button onClick={onClick}>{label}</button>\n));\n```\n\n**2. コード分割と遅延ロード**  \n- **React.lazy + Suspense**：必要なときにだけモジュールを読み込み、初期バンドルサイズを削減します。  \n- **React Router の分割**：ルートごとに `lazy` で読み込み、不要なコードをロードしないようにします。  \n\n```jsx\nconst Dashboard = lazy(() => import('./Dashboard'));\n```\n\n**3. 大量レンダリングの最適化**  \n- **Virtualization**：`react-window` や `react-virtualized` を使い、表示領域内だけを描画します。  \n- **キーの付け方**：リストの `key` を一意にし、DOM diff を高速化。  \n\n```jsx\n<ul>\n  {items.map(item => <li key={item.id}>{item.name}</li>)}\n</ul>\n```\n\n**その他のヒント**  \n- CSS の `transform` / `will-change` を活用し、GPU レンダリングへ移行。  \n- イベントハンドラは `useCallback` でメモ化し、子コンポーネントへの再描画を抑える。  \n- `React DevTools` の Profiler で実際のレンダリング時間を測定し、ボトルネックを特定。\n\n最終的には「必要な時にだけ描画し、再計算は最小限に抑える」ことが鍵です。上記の手法を組み合わせて、ユーザー体験を損なわずに高速なReactアプリを実現しましょう。",
+  "thinking": "",
+  "char_count": 2168,
+  "elapsed_sec": 131.09,
+  "timestamp": "2026-03-23T01:44:34",
+  "retry": true
+}

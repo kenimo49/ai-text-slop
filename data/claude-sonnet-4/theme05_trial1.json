@@ -1,0 +1,10 @@
+{
+  "model": "claude-sonnet-4",
+  "theme_index": 5,
+  "theme": "データベースインデックスの仕組みと最適化",
+  "trial": 1,
+  "response": "# データベースインデックスの仕組みと最適化\n\nデータベースのパフォーマンス向上において、インデックスは最も重要な要素の一つです。本記事では、インデックスの基本的な仕組みから実際の最適化手法まで解説します。\n\n## インデックスとは\n\nインデックスとは、データベースのテーブルに対して作成される「索引」のことです。書籍の目次のように、特定の値を持つレコードを高速で検索できるデータ構造を提供します。\n\n### インデックスの主な利点\n\n- **検索速度の大幅な向上**：O(log n)での検索が可能\n- **ORDER BY句の高速化**：ソート済みデータへのアクセス\n- **JOIN処理の最適化**：結合条件の高速評価\n\n## インデックスの内部構造\n\n### B-Treeインデックス\n\n最も一般的なインデックス構造で、以下の特徴があります：\n\n- **平衡木構造**：すべてのリーフノードが同じ深度\n- **範囲検索に最適**：WHERE句での範囲指定に効果的\n- **順序保持**：キーの順序でデータを格納\n\n```sql\n-- B-Treeインデックスの作成例\nCREATE INDEX idx_user_age ON users(age);\nCREATE INDEX idx_order_date ON orders(order_date);\n```\n\n### ハッシュインデックス\n\n等価検索に特化したインデックスです：\n\n- **O(1)の検索速度**：理論上最高速\n- **等価検索のみ**：範囲検索には使用不可\n- **メモリ効率**：B-Treeより少ないメモリ使用量\n\n## インデックス最適化の実践\n\n### 1. 適切なカラムの選択\n\nインデックスを作成すべきカラムの特徴：\n\n- **WHERE句で頻繁に使用**される条件カラム\n- **JOIN条件**として使用されるカラム\n- **ORDER BY句**で使用されるカラム\n- **カーディナリティが高い**（ユニークな値が多い）カラム\n\n```sql\n-- 効果的なインデックスの例\nCREATE INDEX idx_user_email ON users(email);      -- ユニークで検索頻度高\nCREATE INDEX idx_product_category ON products(category_id, price); -- 複合インデックス\n```\n\n### 2. 複合インデックスの活用\n\n複数のカラムを組み合わせたインデックスです：\n\n```sql\n-- 複合インデックスの作成\nCREATE INDEX idx_user_status_date ON users(status, created_date);\n\n-- 効率的に使用されるクエリ\nSELECT * FROM users \nWHERE status = 'active' \nAND created_date >= '2023-01-01';\n```\n\n**注意点**：カラムの順序が重要です。選択性の高いカラムを先頭に配置しましょう。\n\n### 3. インデックスのメンテナンス\n\n```sql\n-- インデックス使用状況の確認（MySQL例）\nSHOW INDEX FROM users;\n\n-- 実行計画の確認\nEXPLAIN SELECT * FROM users WHERE email = 'user@example.com';\n\n-- 不要なインデックスの削除\nDROP INDEX idx_unused ON users;\n```\n\n## パフォーマンス監視のポイント\n\n### 定期的なチェック項目\n\n- **インデックスの使用率**：実際に使用されているか\n- **クエリ実行時間**：期待される改善が得られているか\n- **更新処理への影響**：INSERT/UPDATE/DELETEの性能低下\n\n### 避けるべきアンチパターン\n\n- 使用されないインデックスの放置\n- 過度に多くのインデックス作成\n- 選択性の低いカラムへのインデックス作成\n\n## まとめ\n\nインデックスは適切に設計・運用することで、データベースの性能を劇的に改善できます。定期的な監視と見直しを行い、アプリケーションの成長に合わせて最適化を続けることが重要です。",
+  "char_count": 1823,
+  "elapsed_sec": 19.73,
+  "timestamp": "2026-03-22T23:44:34.185629"
+}
