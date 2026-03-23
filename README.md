@@ -2,6 +2,7 @@
 
 **AI-generated Japanese text has a detectable "style fingerprint". This repo quantifies it.**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19173035.svg)](https://doi.org/10.5281/zenodo.19173035)
 [![Paper](https://img.shields.io/badge/Paper-PDF-red)](paper/main.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Data](https://img.shields.io/badge/Data-190_samples-green)](data/)
@@ -130,7 +131,8 @@ python scripts/visualize.py
          Across Six Language Models in Japanese Technical Writing},
   author={Imoto, Ken},
   year={2026},
-  url={https://github.com/kenimo49/ai-text-slop}
+  doi={10.5281/zenodo.19173035},
+  url={https://doi.org/10.5281/zenodo.19173035}
 }
 ```
 
