@@ -144,3 +144,7 @@ python scripts/visualize.py
 ## License
 
 MIT
+
+---
+
+If this project saved you time, you can [sponsor its continued maintenance](https://github.com/sponsors/kenimo49).
